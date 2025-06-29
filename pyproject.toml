@@ -1,0 +1,38 @@
+[tool.setuptools]
+packages = ["simple_papers" ]
+
+[project]
+
+name = "simple_papers"
+version = "0.0.0"
+
+description = "A better way to read scientific papers"
+readme = "README.md"
+
+requires-python = ">=3.11"
+
+authors = [
+    { name = "Siavash Yasini", email = "siavash.yasini@gmail.com" }
+]
+
+# List of runtime dependencies
+dependencies = [
+    "streamlit==1.41.1",
+    "awswrangler==3.11.0",
+    "pytest>=8.3.4",
+    "openai>=1.61.1",
+    "ipykernel>=6.7.0",
+    "agentic_doc>=0.1.0",
+]
+
+[project.urls]
+Repository = "https://github.com/syasini/simple_papers"
+
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
+docstring-code-format = true

@@ -1,0 +1,18 @@
+{
+  "1706.03762v7": {
+    "title": "Attention Is All You Need",
+    "path": "papers/1706.03762v7/1706.03762v7.pdf"
+  },
+  "2210.03629": {
+    "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+    "path": "papers/2210.03629/2210.03629.pdf"
+  },
+  "1603.02754v3": {
+    "title": "XGBoost: A Scalable Tree Boosting System",
+    "path": "papers/1603.02754v3/1603.02754v3.pdf"
+  },
+  "jair03-lda": {
+    "title": "Latent Dirichlet Allocation",
+    "path": "papers/jair03-lda/jair03-lda.pdf"
+  }
+}

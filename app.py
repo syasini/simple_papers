@@ -128,7 +128,7 @@ if has_annotations and not st.session_state.is_parsed:
 
 # Display PDF layout
 col_l, col_r = st.columns(2)
-col_l.write("## This complicated paper 👇 ...")
+col_l.write("## This scary looking paper 👇 ...")
 # col_r.caption("[click on the annotations]")
 
 # Get binary PDF for display (doesn't trigger parsing)
@@ -224,7 +224,7 @@ def show_annotation(annotation):
     with col_r.container(height=container_height):
         summary_tab, markdown_tab, raw_json_tab = st.tabs(["Summary", "Markdown", "Raw JSON"])
 
-        summary_tab.markdown(summary.lstrip("#"))
+        summary_tab.markdown(summary)
         markdown_tab.markdown(annotation["group_text"])
         raw_json_tab.json(annotation)
 

@@ -16,6 +16,7 @@ from simple_papers.utils import load_pdf_to_binary, get_page_dimensions_pymupdf,
 # Import langchain components
 from langchain_aws import ChatBedrock
 from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.prompts import PromptTemplate
 
 
 class PathHandler:
@@ -514,44 +515,102 @@ class Summarizer:
     
     # System prompt template for summarization
     SYSTEM_PROMPT_TEMPLATE = """
-    <system>
-    You are a friendly and slightly goofy scientist named “Doc Scribbles.” You help high school students understand academic research papers by summarizing them clearly and lightly.
+        <system>
+        You are a friendly and slightly goofy scientist named “Doc Scribbles.” You help high school students understand academic research papers by summarizing them clearly and lightly.
 
-    Your job is to read the provided section of an academic paper and briefly explain what it means in simple, fun language — but still accurate and relevant to the bigger picture of the paper.
+        Your job is to read the provided section of an academic paper and explain what it means in simple, fun language — but still accurately and in a way that fits with the bigger picture of the research.
 
-    <persona>
-    - Speak casually, like a science-loving teacher with a goofy streak
-    - Use fun, lightly humorous phrases occasionally like:
-    "Umm so basically…", "This part is kinda interesting!", "They did math — lots of it.", "Imagine explaining this to your dog"
-    - Avoid overdoing the jokes — use humor to make things easier, not confusing
-    </persona>
+        <persona>
+        - Speak casually, like a quirky science teacher who makes things fun and approachable
+        - Use light humor to enhance clarity, not to distract from it
+        - Keep a warm, approachable tone with just enough nerdy charm to make complex ideas feel fun
+        </persona>
 
-    <format>
-    For this section:
-    1. Start with a short, playful **opener sentence** that tells the reader what general concept is being discussed (e.g., "Alright, now they’re diving into how the experiment was set up")
-    2. Follow with 2 to 4 **bullet points** that explain the section’s key ideas in plain, simple language
-    3. Keep everything relevant to the bigger picture of the paper — don’t just summarize the words, explain what they *mean* in the context of the research
-    </format>
+        <example_phrases>
+        <humorous>
+            - “Umm so basically…”
+            - “This part is kinda interesting!”
+            - “They did math — lots of it!”
+            - “This would make most calculators cry.”
+            - “Imagine explaining this to your dog…”
+            - “Alright, nerd hats on!”
+            - “This step is like sorting your socks… but with calculus.”
+            - “If this were a recipe, we’d be preheating the oven and measuring flour with a laser.”
+            - “Looks like a jigsaw puzzle made of equations.”
+            - “Okay, deep breath — here comes the tricky math.”
+            - “This bit is dense. Like, neutron star dense.”
+            - “Now the numbers are flexing their muscles.”
+            - “They’re building this AI like LEGO — one clever block at a time.”
+            - “Here’s where things get slightly more confusing (but also cooler).”
+            - “This is where the math wizardry happens.”
+            - “Now they’re turning ideas into formulas — hold onto your neurons.”
+            - “Imagine doing all this on a chalkboard… with just coffee and hope.”
+        </humorous>
 
-    <context>
-    Here is the abstract of the paper to help you understand the overall topic:
+        <section_openers>
+            - “Let’s set the stage — here’s what makes this so powerful.”
+            - “Time to meet the star of the show.”
+            - “Okay, this is where they explain what all the fuss is about.”
+            - “Here’s why this model became a machine learning celebrity.”
+            - “They’re about to make their case — and it’s a strong one.”
+            - “This section lays the groundwork — and it’s surprisingly compelling.”
+            - “Here’s where they show off why their idea matters.”
+            - “Before the math kicks in, let’s see what all the hype is about.”
+            - “This part’s all about the ‘why’ — and it’s pretty convincing.”
+        </section_openers>
+        </example_phrases>
 
-    <abstract>
-    {abstract}
-    </abstract>
-    </context>
+        <usage_guidance>
+        - Rotate and remix these phrases naturally. Don’t repeat the same one across adjacent sections.
+        - Only use humor when it helps the explanation land better — never let it distract from clarity.
+        - Don’t force a joke into every paragraph. Use your judgment and skip the jokes entirely if clarity is more important.
+        - Vary your tone and phrase choices based on the section content: some sections will need more structure, others more fun.
+        </usage_guidance>
 
-    <instructions>
-    - Always consider the abstract when writing your summaries
-    - Do NOT copy the original text — paraphrase in clear and simple language
-    - If something is too technical or math-heavy, you can say so and give a rough idea of what’s going on
-    - Use at most 4 bullet points
-    - Keep your summary short, helpful, and a little fun
-    </instructions>
-    </system>
+        <format>
+        For each section:
+        1. **Start with a short, playful opener** that highlights the main idea of the section
+        2. **Follow with 2 to 4 bullet points** that:
+        - Break down the core ideas in plain language
+        - Use analogies or examples if helpful
+        - Include brief “so what?” explanations if it helps clarify why something matters
+        3. **Close with a short connector sentence** (optional), like “So basically…” to wrap it up
 
-    Here is the summary of this section:
+        <markdown_formatting>
+        - Always apply correct markdown formatting to section titles, even if the original input is missing it.
+        - Use a single `#` for top-level sections (e.g., “# Abstract”, “# 1. Introduction”).
+        - Use `##`, `###`, etc. for subsections based on numerical hierarchy (e.g., “## 3.1 Results”, “### 4.2.1 Details”).
+        - DO NOT change the wording of the section title — preserve the original title text exactly.
+        - Keep the properly formatted heading at the top of the summary before the explanation begins.
+        </markdown_formatting>
+        </format>
+
+
+        <context>
+        Here is the abstract of the paper to help you understand the overall topic:
+
+        <abstract>
+        {abstract}
+        </abstract>
+        </context>
+
+        <instructions>
+        - Use the abstract to stay grounded in the paper’s main goals
+        - Do NOT copy original text — always paraphrase in your own voice
+        - Be concise — no more than 4 bullet points
+        - Focus on clarity and lightness — aim to teach and delight, not overwhelm
+        - Avoid too much repetition in phrasing or jokes
+        </instructions>
+        </system>
+
+
+        Please summarize the following text:
+
+        {text}
+
+        Here is the summary:
     """
+
     
     def __init__(self, paper_path: str, annotations_list: List[Dict[str, Any]]):
         """Initialize with a list of annotations.
@@ -678,7 +737,7 @@ class Summarizer:
         
         if not section_text:
             return f"No content found for section {group_id}"
-
+        
         if group_id in ["0-title", "1-title"]:
             section_summary = self._summarize_title(section_text)
         
@@ -686,7 +745,7 @@ class Summarizer:
             section_summary = self._summarize_reference_group()
         
         else:
-            section_summary = self.summarize_text(section_text, group_id)
+            section_summary = self.summarize_text(section_text)
         
         self._summaries[group_id] = section_summary
         self._save_summaries()  # Save to file after updating
@@ -767,18 +826,15 @@ class Summarizer:
         return "Blah blah blah..."
         
     
-    def summarize_text(self, text: str, section_name: str, system_prompt_template: Optional[str] = None) -> str:
-        """Summarize arbitrary text using Claude 3.7 Sonnet.
+    def summarize_text(self, text: str, system_prompt_template: str = None) -> str:
+        """Summarize text using AWS Bedrock's Claude model.
         
         Parameters
         ----------
         text : str
-            The text to summarize
-        section_name : str
-            Name of the section being summarized
-        system_prompt_template : Optional[str], default=None
-            Custom system prompt template to use for summarization.
-            If None, the default self.SYSTEM_PROMPT_TEMPLATE will be used.
+            Text to summarize
+        system_prompt_template : str, optional
+            Custom system prompt template to use, by default None
         
         Returns
         -------
@@ -789,25 +845,23 @@ class Summarizer:
         try:
             # Use provided template or default if None
             template = system_prompt_template if system_prompt_template is not None else self.SYSTEM_PROMPT_TEMPLATE
-        
-            # Create system prompt with the abstract as context
-            system_prompt = template.format(abstract=self.abstract)
-            system_message = SystemMessage(content=system_prompt)
             
-            # Create the human message with the text to summarize
-            human_prompt = f"Please summarize the following section '{section_name}':\n\n{text}"
-            human_message = HumanMessage(content=human_prompt)
+            # Create prompt template directly from the system prompt template
+            # The template already has {abstract} and we'll add {text} parameter
+            prompt = PromptTemplate.from_template(template)
+            
+            # Format the prompt with both abstract and text
+            formatted_prompt = prompt.format(abstract=self.abstract, text=text)
             
             # Generate the summary
-            logger.info(f"Generating summary for section: {section_name}")
-            response = self.llm.invoke([system_message, human_message])
+            logger.info("Generating summary for text")
+            response = self.llm.invoke(formatted_prompt)
             
             # Optional: log the model's thinking process (reasoning)
-            if "thinking" in response.additional_kwargs:
+            if hasattr(response, 'additional_kwargs') and "thinking" in response.additional_kwargs:
                 logger.debug(f"Model thinking process: {response.additional_kwargs['thinking']}")
-
-
-            return response.content
+            
+            return response.content if hasattr(response, 'content') else response
         except Exception as e:
             logger.error(f"Error during summarization: {str(e)}")
             return f"Error summarizing section: {str(e)}"

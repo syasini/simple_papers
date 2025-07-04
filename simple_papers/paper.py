@@ -53,22 +53,56 @@ class Paper:
         self.path_handler = PathHandler(path)
         
         self.parsed_doc_path = self.path_handler.parsed_doc_path
-        self.parsed_doc = self.fetch_parsed_doc(parsed_doc)
+        # Don't load parsed_doc on initialization unless explicitly provided
+        self.parsed_doc = parsed_doc if parsed_doc is not None else None
 
         self.pdf_binary = load_pdf_to_binary(path)
 
-    def fetch_parsed_doc(self, parsed_doc: ParsedDocument = None):
-        if parsed_doc is not None:
-            logger.info("Parsed document provided")
-            return parsed_doc
-        else:
-            if self.parsed_doc_path.exists():
-                logger.info(f"Parsed document not provided, loading from {self.parsed_doc_path}")
+    def load_parsed_doc_if_exists(self) -> Optional[ParsedDocument]:
+        """
+        Load the parsed document from disk if it exists.
+        This doesn't parse the document, just loads an existing .pkl file.
+        
+        Returns
+        -------
+        ParsedDocument or None
+            The parsed document if available on disk, None otherwise
+        """
+        if self.parsed_doc_path.exists():
+            logger.info(f"Loading parsed document from {self.parsed_doc_path}")
+            try:
                 with open(self.parsed_doc_path, "rb") as f:
                     self.parsed_doc = pickle.load(f)
                 return self.parsed_doc
-            else:
+            except Exception as e:
+                logger.error(f"Error loading parsed document: {str(e)}")
                 return None
+        else:
+            logger.info(f"No parsed document found at {self.parsed_doc_path}")
+            return None
+
+    def fetch_parsed_doc(self, parsed_doc: ParsedDocument = None):
+        """
+        Fetch the parsed document only if needed.
+        
+        Parameters
+        ----------
+        parsed_doc : ParsedDocument, optional
+            Parsed document if already available
+            
+        Returns
+        -------
+        ParsedDocument or None
+            The parsed document if available
+        """
+        if parsed_doc is not None:
+            logger.info("Parsed document provided")
+            return parsed_doc
+        elif self.parsed_doc is not None:
+            logger.info("Parsed document already loaded")
+            return self.parsed_doc
+        else:
+            return self.load_parsed_doc_if_exists()
 
     @cached_property
     def paper_width(self):
@@ -86,9 +120,24 @@ class Paper:
     def get_parsed_doc(self) -> ParsedDocument:
         """
         Get or create the parsed document.
-        If it doesn't exist, create it and cache it.
+        If document is not already loaded, try to load from disk.
+        If it doesn't exist on disk, parse it and save it.
+        
+        Returns
+        -------
+        ParsedDocument
+            The parsed document
         """
+        # If already loaded in memory, return it
+        if self.parsed_doc is not None:
+            return self.parsed_doc
+            
+        # Try to load from disk
+        self.parsed_doc = self.load_parsed_doc_if_exists()
+        
+        # If still None, parse the document
         if self.parsed_doc is None:
+            logger.info("Parsing document from scratch")
             self.parsed_doc = self.get_parse_document()
                 
         return self.parsed_doc
@@ -106,6 +155,17 @@ class Paper:
             pickle.dump(result, f)
         return result
 
+    def has_annotations(self) -> bool:
+        """
+        Check if annotations exist for this paper.
+        
+        Returns
+        -------
+        bool
+            True if annotations file exists, False otherwise
+        """
+        return self.path_handler.annotations_path.exists()
+        
     @staticmethod
     def _parse_document(path: str) -> ParsedDocument:
         """Parse the document using agentic_doc.parse.parse
@@ -170,11 +230,9 @@ class Paper:
         
         
 class Annotation:
-    """
-    Class to handle annotations from parsed documents.
-    It processes the parsed document to create annotations and handle merging/summarizing sections.
-    """
-
+    """Class to handle annotations from parsed documents.
+    It processes the parsed document to create annotations and handle merging/summarizing sections."""
+    
     def __init__(self, paper: Paper):
         """
         Initialize an Annotation object.
@@ -191,11 +249,14 @@ class Annotation:
         self._group_cache: Optional[Dict[str, int]] = None
         self._group_texts: Optional[Dict[int, List[str]]] = None
         
+        # Load annotations if they exist
+        if self.annotations_path.exists():
+            self._load_annotations_from_file()
+        
     @property
     def annotations(self) -> List[Dict[str, Any]]:
         """
-        Get annotations from parsed document.
-        Process the parsed document to create annotations for PDF viewer.
+        Get annotations from memory cache, file, or generate them if needed.
         
         Returns
         -------
@@ -205,17 +266,18 @@ class Annotation:
         if self._annotations_cache:
             logger.info("Annotations already exist in memory cache")
             return self._annotations_cache
-
         elif self.annotations_path.exists():
             logger.info(f"Annotations already exist in file {self.annotations_path}")
-            with open(self.annotations_path, "r") as f:
-                return json.load(f)["annotations"]
-        
-        return self.generate_annotations()
+            # Load annotations from file
+            return self._load_annotations_from_file()
+        else:
+            # Generate annotations if they don't exist
+            logger.info("No annotations found, generating them")
+            return self.generate_annotations()
         
     def generate_annotations(self) -> List[Dict[str, Any]]:
         """
-        Get annotations from parsed document.
+        Generate annotations from parsed document.
         Process the parsed document to create annotations for PDF viewer.
         
         Returns
@@ -223,11 +285,12 @@ class Annotation:
         list
             List of annotation dictionaries compatible with the PDF viewer
         """
-        logger.info("Getting annotations")
+        logger.info("Generating new annotations")
         
-        
+        # This requires the parsed document
         parsed_doc = self.paper.get_parsed_doc()
         if parsed_doc is None:
+            logger.error("Cannot generate annotations: parsed document is None")
             return []
         
         # First pass: Create initial annotations with group ids
@@ -279,34 +342,60 @@ class Annotation:
             # Always include the group_text field
             annotation["group_text"] = "\n\n".join(group_texts[group])
 
-        logger.info(f"group texts: {group_texts[0]}")
+        logger.info(f"Generated {len(annotations)} annotations")
         
         self._annotations_cache = annotations
 
+        # Save annotations to file for future use
         with open(self.annotations_path, "w") as f:
             json.dump({"annotations": annotations}, f, indent=4)
         return annotations
 
     
-    def get_chunk_group_mapping(self, parsed_doc: ParsedDocument) -> Dict[str, int]:
+    def _load_annotations_from_file(self) -> List[Dict[str, Any]]:
+        """
+        Load annotations from the JSON file.
+        
+        Returns
+        -------
+        list
+            List of annotation dictionaries
+        """
+        try:
+            with open(self.annotations_path, "r") as f:
+                annotations_data = json.load(f)
+                self._annotations_cache = annotations_data["annotations"]
+                return self._annotations_cache
+        except Exception as e:
+            logger.error(f"Error loading annotations from {self.annotations_path}: {str(e)}")
+            return []
+    
+    def get_chunk_group_mapping(self, parsed_doc: ParsedDocument = None) -> Dict[str, str]:
         """
         Get the chunk groups, using cached results if available.
         
         Parameters
         ----------
-        parsed_doc : ParsedDocument
+        parsed_doc : ParsedDocument, optional
             The parsed document to group
             
         Returns
         -------
-        Dict[str, int]
-            Dictionary mapping chunk IDs to group numbers
+        Dict[str, str]
+            Dictionary mapping chunk IDs to group identifiers
         """
-        # If we have a cache and it's for the same document, return it
+        # If we have a cache, return it
         if self._group_cache is not None:
             return self._group_cache
+        
+        # If no parsed_doc provided but needed, try to get it
+        if parsed_doc is None:
+            parsed_doc = self.paper.get_parsed_doc()
+            if parsed_doc is None:
+                logger.error("Cannot get chunk group mapping: no parsed document available")
+                return {}
             
-        # Otherwise, generate the grouping and cache it
+        # Generate the grouping and cache it
         self._group_cache = self._group_parsed_doc_chunks(parsed_doc)
         return self._group_cache
     

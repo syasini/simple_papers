@@ -67,7 +67,7 @@ selected_paper_id = None
 
 if not uploaded_file and paper_titles:
     # Create options list from paper titles
-    titles = [info["title"] for paper_id, info in paper_titles.items()]
+    titles = [info["title"] for info in paper_titles.values()]
     
     # Show dropdown
     selected_title = st.sidebar.selectbox(
@@ -79,7 +79,9 @@ if not uploaded_file and paper_titles:
     for paper_id, info in paper_titles.items():
         if info["title"] == selected_title:
             selected_paper_id = paper_id
+            st.sidebar.caption(f"Paper ID: {selected_paper_id}")
             break
+    
     
     # Update session state if selection changed
     if selected_paper_id != st.session_state.selected_paper:
@@ -103,20 +105,14 @@ else:
     # Default paper as fallback
     paper = Paper("papers/2210.03629/2210.03629.pdf")
 
-# Check if this document has already been parsed
-doc_already_parsed = paper.parsed_doc_path.exists()
-if doc_already_parsed and not st.session_state.is_parsed:
-    logger.info(f"Found existing parsed document at {paper.parsed_doc_path}")
+# Check if this document has annotations or has been parsed
+has_annotations = paper.has_annotations()
+if has_annotations and not st.session_state.is_parsed:
+    logger.info(f"Found existing annotations at {paper.path_handler.annotations_path}")
     
-    # Load the parsed document
-    paper.parsed_doc = paper.get_parsed_doc()
-    
-    # Initialize annotation handler with the parsed document
+    # Initialize annotation handler and load annotations - this doesn't need parsed_doc
     annotation_handler = Annotation(paper)
     st.session_state.annotations_list = annotation_handler.annotations
-    
-    # Set the parsed flag
-    st.session_state.is_parsed = True
     
     # Initialize summarizer with annotations
     st.session_state.summarizer = Summarizer(paper.path, st.session_state.annotations_list)
@@ -124,7 +120,11 @@ if doc_already_parsed and not st.session_state.is_parsed:
     # Initialize summary audio handler
     st.session_state.summary_audio = SummaryReader(paper.path)
     
-    st.sidebar.success(f"✓ Loaded existing parsed document")
+    # Set state to parsed
+    st.session_state.is_parsed = True
+    
+    logger.info("Paper is now ready with existing annotations")
+    st.sidebar.success("✓ Paper loaded with existing annotations")
 
 # Display PDF layout
 col_l, col_r = st.columns(2)
@@ -134,18 +134,16 @@ col_l.write("## This complicated paper 👇 ...")
 # Get binary PDF for display (doesn't trigger parsing)
 binary_pdf = paper.pdf_binary
 
-# Parse Document button - disabled if already parsed
-if st.sidebar.button("Parse Document", key="parse_document", disabled=st.session_state.is_parsed):
+# Parse Document button - only enabled if paper doesn't have annotations
+if st.sidebar.button("Parse Document", key="parse_document", disabled=paper.has_annotations()):
     with st.spinner("Parsing document..."):
         # This is where parsing happens
-        paper.get_parse_document()
+        paper.get_parsed_doc()  # This will parse the document and create the .pkl file if needed
         
         # Initialize annotation handler after parsing
         annotation_handler = Annotation(paper)
-        st.session_state.annotations_list = annotation_handler.annotations
-        
-        # Set the parsed flag
-        st.session_state.is_parsed = True
+        # Generate annotations from the parsed document
+        st.session_state.annotations_list = annotation_handler.generate_annotations()
         
         # Initialize summarizer with annotations
         st.session_state.summarizer = Summarizer(paper.path, st.session_state.annotations_list)
@@ -259,9 +257,12 @@ with col_l.container(height=container_height):
         on_annotation_click=show_annotation,
     )
 
-# Add a message if document is not yet parsed
+# Add an appropriate message based on the document state
 if not st.session_state.is_parsed:
-    st.sidebar.info("📋 Click 'Parse Document' to analyze the paper and see annotations.")
+    if paper.has_annotations():
+        st.sidebar.info("⚠️ Annotations exist but haven't been loaded yet. Please reload the page.")
+    else:
+        st.sidebar.info("📋 Click 'Parse Document' to analyze the paper and see annotations.")
 
 
 # st.write(st.session_state["summarizer"]._summaries)

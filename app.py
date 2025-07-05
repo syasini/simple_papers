@@ -5,7 +5,10 @@ import json
 from pathlib import Path
 from loguru import logger
 from streamlit_pdf_viewer import pdf_viewer
-from simple_papers.paper import Paper, Annotation, Summarizer, SummaryReader
+from simple_papers.paper import Paper
+from simple_papers.annotation import Annotation
+from simple_papers.summarizer import Summarizer
+from simple_papers.audio_handler import AudioHandler
 from simple_papers.utils import text_to_audio_bytes
 
 # set up wide mode
@@ -62,7 +65,7 @@ if uploaded_file is not None:
     st.session_state.selected_paper = None  # Clear selection when uploading
 
 # Paper selection dropdown (only shown if no file is uploaded)
-st.sidebar.markdown("### Previously Parsed Papers")
+st.sidebar.markdown("### Paper arXiv")
 selected_paper_id = None
 
 if not uploaded_file and paper_titles:
@@ -107,6 +110,19 @@ else:
 
 # Check if this document has annotations or has been parsed
 has_annotations = paper.has_annotations()
+
+parse_doc_button = st.sidebar.empty()
+
+
+# Add audio toggle to sidebar
+st.sidebar.markdown("### Audio Settings")
+audio_enabled = st.sidebar.toggle("Enable Audio", value=False)
+default_audio_voice = st.sidebar.selectbox("Default Audio Voice", options=["Alloy", "Joe"], disabled=not audio_enabled)
+
+if st.session_state.summary_audio:
+    st.session_state.summary_audio.default_audio_voice = default_audio_voice
+    
+
 if has_annotations and not st.session_state.is_parsed:
     logger.info(f"Found existing annotations at {paper.path_handler.annotations_path}")
     
@@ -118,7 +134,7 @@ if has_annotations and not st.session_state.is_parsed:
     st.session_state.summarizer = Summarizer(paper.path, st.session_state.annotations_list)
     
     # Initialize summary audio handler
-    st.session_state.summary_audio = SummaryReader(paper.path)
+    st.session_state.summary_audio = AudioHandler(paper.path, default_audio_voice=default_audio_voice)
     
     # Set state to parsed
     st.session_state.is_parsed = True
@@ -135,7 +151,7 @@ col_l.write("## This scary looking paper 👇 ...")
 binary_pdf = paper.pdf_binary
 
 # Parse Document button - only enabled if paper doesn't have annotations
-if st.sidebar.button("Parse Document", key="parse_document", disabled=paper.has_annotations()):
+if parse_doc_button.button("Parse Document", key="parse_document", disabled=paper.has_annotations()):
     with st.spinner("Parsing document..."):
         # This is where parsing happens
         paper.get_parsed_doc()  # This will parse the document and create the .pkl file if needed
@@ -149,7 +165,7 @@ if st.sidebar.button("Parse Document", key="parse_document", disabled=paper.has_
         st.session_state.summarizer = Summarizer(paper.path, st.session_state.annotations_list)
         
         # Initialize summary audio handler
-        st.session_state.summary_audio = SummaryReader(paper.path)
+        st.session_state.summary_audio = AudioHandler(paper.path, default_audio_voice=default_audio_voice)
         
         # Add paper to paper titles registry
         try:
@@ -179,9 +195,6 @@ if st.sidebar.button("Parse Document", key="parse_document", disabled=paper.has_
     
     st.rerun()
 
-# Add audio toggle to sidebar
-st.sidebar.markdown("### Audio Settings")
-audio_enabled = st.sidebar.toggle("Enable Audio", value=False)
 
 # Summarize Document button - only show if document is parsed
 if st.session_state.is_parsed:
@@ -190,14 +203,15 @@ if st.session_state.is_parsed:
         with st.spinner("Summarizing document..."):
             st.session_state.summarizer.summarize_all_sections()
         st.rerun()
+
     
     # Generate All Audio button - always show but disable when audio is off
     if st.sidebar.button("Generate All Audio", key="generate_all_audio", disabled=not audio_enabled):
         with st.spinner("Generating audio for all summaries..."):
             # Initialize the summary audio handler if not done yet
             if st.session_state.summary_audio is None:
-                st.session_state.summary_audio = SummaryReader(paper.path)
-            
+                st.session_state.summary_audio = AudioHandler(paper_path=paper.path, default_audio_voice=default_audio_voice)
+                st.write(st.session_state.summary_audio.voice_mapping)
             # Get all summaries from the summarizer
             summaries = st.session_state.summarizer._summaries
             

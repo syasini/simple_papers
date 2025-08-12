@@ -1,6 +1,101 @@
 {
-    "1-abstract": "papers/1603.02754v3/audio/1603.02754v3_1-abstract_ch0vU2DwfJVmFG2iZy89.mp3",
-    "3-tree": "papers/1603.02754v3/audio/1603.02754v3_3-tree_ch0vU2DwfJVmFG2iZy89.mp3",
-    "5-gradient": "papers/1603.02754v3/audio/1603.02754v3_5-gradient_ch0vU2DwfJVmFG2iZy89.mp3",
-    "0-title": "papers/1603.02754v3/audio/1603.02754v3_0-title_gU0LNdkMOQCOrPrwtbee.mp3"
+    "3-tree": [
+        "papers/1603.02754v3/audio/1603.02754v3_3-tree_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_3-tree_Hope.mp3"
+    ],
+    "5-gradient": [
+        "papers/1603.02754v3/audio/1603.02754v3_5-gradient_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_5-gradient_Amelia.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_5-gradient_Hope.mp3"
+    ],
+    "0-title": [
+        "papers/1603.02754v3/audio/1603.02754v3_0-title_Football.mp3"
+    ],
+    "4-regularized": [
+        "papers/1603.02754v3/audio/1603.02754v3_4-regularized_Alloy.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_4-regularized_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_4-regularized_Hope.mp3"
+    ],
+    "6-shrinkage": [
+        "papers/1603.02754v3/audio/1603.02754v3_6-shrinkage_Alloy.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_6-shrinkage_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_6-shrinkage_Hope.mp3"
+    ],
+    "1-abstract": [
+        "papers/1603.02754v3/audio/1603.02754v3_1-abstract_Felicity.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_1-abstract_Alloy.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_1-abstract_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_1-abstract_Hope.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_1-abstract_Amelia.mp3"
+    ],
+    "2-introduction": [
+        "papers/1603.02754v3/audio/1603.02754v3_2-introduction_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_2-introduction_Felicity.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_2-introduction_Amelia.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_2-introduction_Hope.mp3"
+    ],
+    "13-blocks": [
+        "papers/1603.02754v3/audio/1603.02754v3_13-blocks_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_13-blocks_Hope.mp3"
+    ],
+    "7-split": [
+        "papers/1603.02754v3/audio/1603.02754v3_7-split_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_7-split_Hope.mp3"
+    ],
+    "9-weighted": [
+        "papers/1603.02754v3/audio/1603.02754v3_9-weighted_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_9-weighted_Hope.mp3"
+    ],
+    "10-sparsity": [
+        "papers/1603.02754v3/audio/1603.02754v3_10-sparsity_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_10-sparsity_Hope.mp3"
+    ],
+    "11-system": [
+        "papers/1603.02754v3/audio/1603.02754v3_11-system_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_11-system_Hope.mp3"
+    ],
+    "12-cache": [
+        "papers/1603.02754v3/audio/1603.02754v3_12-cache_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_12-cache_Hope.mp3"
+    ],
+    "14-related": [
+        "papers/1603.02754v3/audio/1603.02754v3_14-related_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_14-related_Hope.mp3"
+    ],
+    "15-end": [
+        "papers/1603.02754v3/audio/1603.02754v3_15-end_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_15-end_Hope.mp3"
+    ],
+    "16-dataset": [
+        "papers/1603.02754v3/audio/1603.02754v3_16-dataset_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_16-dataset_Hope.mp3"
+    ],
+    "17-classification": [
+        "papers/1603.02754v3/audio/1603.02754v3_17-classification_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_17-classification_Hope.mp3"
+    ],
+    "18-out": [
+        "papers/1603.02754v3/audio/1603.02754v3_18-out_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_18-out_Hope.mp3"
+    ],
+    "19-distributed": [
+        "papers/1603.02754v3/audio/1603.02754v3_19-distributed_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_19-distributed_Hope.mp3"
+    ],
+    "20-m3": [
+        "papers/1603.02754v3/audio/1603.02754v3_20-m3_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_20-m3_Hope.mp3"
+    ],
+    "21-conclusion": [
+        "papers/1603.02754v3/audio/1603.02754v3_21-conclusion_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_21-conclusion_Hope.mp3"
+    ],
+    "22-appendix": [
+        "papers/1603.02754v3/audio/1603.02754v3_22-appendix_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_22-appendix_Hope.mp3"
+    ],
+    "8-approximate": [
+        "papers/1603.02754v3/audio/1603.02754v3_8-approximate_Joe.mp3",
+        "papers/1603.02754v3/audio/1603.02754v3_8-approximate_Hope.mp3"
+    ]
 }

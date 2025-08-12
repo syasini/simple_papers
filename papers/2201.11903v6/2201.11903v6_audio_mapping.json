@@ -1,0 +1,49 @@
+{
+    "0-title": [
+        "papers/2201.11903v6/audio/2201.11903v6_0-title_Football.mp3"
+    ],
+    "1-abstract": [
+        "papers/2201.11903v6/audio/2201.11903v6_1-abstract_Joe.mp3",
+        "papers/2201.11903v6/audio/2201.11903v6_1-abstract_Amelia.mp3",
+        "papers/2201.11903v6/audio/2201.11903v6_1-abstract_Felicity.mp3",
+        "papers/2201.11903v6/audio/2201.11903v6_1-abstract_Hope.mp3"
+    ],
+    "10-symbolic": [
+        "papers/2201.11903v6/audio/2201.11903v6_10-symbolic_Joe.mp3"
+    ],
+    "11-discussion": [
+        "papers/2201.11903v6/audio/2201.11903v6_11-discussion_Joe.mp3"
+    ],
+    "12-related": [
+        "papers/2201.11903v6/audio/2201.11903v6_12-related_Joe.mp3"
+    ],
+    "13-conclusions": [
+        "papers/2201.11903v6/audio/2201.11903v6_13-conclusions_Joe.mp3"
+    ],
+    "4-arithmetic": [
+        "papers/2201.11903v6/audio/2201.11903v6_4-arithmetic_Joe.mp3"
+    ],
+    "5-experimental": [
+        "papers/2201.11903v6/audio/2201.11903v6_5-experimental_Joe.mp3"
+    ],
+    "6-results": [
+        "papers/2201.11903v6/audio/2201.11903v6_6-results_Joe.mp3"
+    ],
+    "7-ablation": [
+        "papers/2201.11903v6/audio/2201.11903v6_7-ablation_Joe.mp3"
+    ],
+    "8-robustness": [
+        "papers/2201.11903v6/audio/2201.11903v6_8-robustness_Joe.mp3"
+    ],
+    "9-commonsense": [
+        "papers/2201.11903v6/audio/2201.11903v6_9-commonsense_Joe.mp3"
+    ],
+    "2-introduction": [
+        "papers/2201.11903v6/audio/2201.11903v6_2-introduction_Joe.mp3",
+        "papers/2201.11903v6/audio/2201.11903v6_2-introduction_Amelia.mp3"
+    ],
+    "3-chain": [
+        "papers/2201.11903v6/audio/2201.11903v6_3-chain_Joe.mp3",
+        "papers/2201.11903v6/audio/2201.11903v6_3-chain_Amelia.mp3"
+    ]
+}

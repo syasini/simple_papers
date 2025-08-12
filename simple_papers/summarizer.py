@@ -314,8 +314,11 @@ class Summarizer:
         </instructions>
         </system>
         """
+
+        prompt_template = PromptTemplate.from_template(system_prompt_template).format(title=title)
+        response = self.llm.invoke(prompt_template)
         
-        return self.summarize_text(title, system_prompt_template)
+        return response.content
     
     def _get_title(self) -> str:
         """Extract the paper title from annotations list.
@@ -397,7 +400,7 @@ class Summarizer:
         
         for group_id in sorted(groups):
             try:
-                summary = self.summarize_section(group_id)
+                summary = self.summarize_section(group_id, override_summary=True)
                 results[group_id] = summary
             except Exception as e:
                 logger.error(f"Failed to summarize section {group_id}: {str(e)}")

@@ -3,6 +3,7 @@ import streamlit as st
 import os
 import json
 from pathlib import Path
+from typing import Dict, Any, Optional, List, Tuple
 from loguru import logger
 from streamlit_pdf_viewer import pdf_viewer
 from simple_papers.paper import Paper
@@ -11,15 +12,46 @@ from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
 from simple_papers.utils import text_to_audio_bytes
 
+def get_available_voices_for_section(group_id: str, audio_mapping: Dict[str, List[str]]) -> Tuple[List[str], Dict[str, str]]:
+    """
+    Extract available voices for a section from the audio mapping.
+    
+    Parameters
+    ----------
+    group_id : str
+        The section ID to get voices for
+    audio_mapping : Dict[str, List[str]]
+        The audio mapping dictionary
+        
+    Returns
+    -------
+    Tuple[List[str], Dict[str, str]]
+        A tuple containing a list of voice names and a dictionary mapping voice names to file paths
+    """
+    voice_options = []
+    voice_paths = {}
+    
+    if group_id in audio_mapping and audio_mapping[group_id]:
+        audio_files = audio_mapping[group_id]
+        
+        for audio_path in audio_files:
+            # The voice is the last part before the .mp3 extension
+            voice_name = Path(audio_path).stem.split('_')[-1]
+            voice_options.append(voice_name)
+            voice_paths[voice_name] = audio_path
+    
+    return voice_options, voice_paths
+
 # set up wide mode
 st.set_page_config(layout="wide")
 st.sidebar.image("media/logo_small.png")
 # st.sidebar.title("Simple papers")
 
 # UI Configuration
-container_height = st.sidebar.number_input("Container Height", min_value=100, max_value=2000, value=800, step=50)
-zoom_level = st.sidebar.number_input("Zoom Level", min_value=1.0, max_value=2.0, value=1.2)
-show_page_separator = st.sidebar.checkbox("Show Page Separator", value=True)
+with st.sidebar.expander("Display Settings"):
+    container_height = st.number_input("Container Height", min_value=100, max_value=2000, value=950, step=50)
+    zoom_level = st.number_input("Zoom Level", min_value=1.0, max_value=2.0, value=1.2, step=0.1)
+    show_page_separator = st.checkbox("Show Page Separator", value=True)
 
 # Initialize session state variables
 if "is_parsed" not in st.session_state:
@@ -50,9 +82,12 @@ except Exception as e:
     logger.warning(f"Could not load paper titles: {e}")
     paper_titles = {}
 
+st.sidebar.header("Paper Settings")
+
+
 # File upload section
-st.sidebar.markdown("### Upload PDF")
-uploaded_file = st.sidebar.file_uploader("Upload a new paper", type="pdf")
+st.sidebar.markdown("#### Bring Your Own Paper (BYOP)")
+uploaded_file = st.sidebar.file_uploader("Bring Your Own Paper (BYOP)", type="pdf", label_visibility="collapsed")
 
 # Reset state when a file is uploaded
 if uploaded_file is not None:
@@ -65,7 +100,7 @@ if uploaded_file is not None:
     st.session_state.selected_paper = None  # Clear selection when uploading
 
 # Paper selection dropdown (only shown if no file is uploaded)
-st.sidebar.markdown("### Paper arXiv")
+# st.sidebar.markdown("### Paper arXiv", help="Yes it's a pun!")
 selected_paper_id = None
 
 if not uploaded_file and paper_titles:
@@ -73,9 +108,14 @@ if not uploaded_file and paper_titles:
     titles = [info["title"] for info in paper_titles.values()]
     
     # Show dropdown
+    st.sidebar.caption(" or")
+    st.sidebar.markdown("#### Select From the Paper arXiv", help="Yes it's a pun!")
     selected_title = st.sidebar.selectbox(
-        "Select a paper",
-        options=titles
+        "Select From the Paper arXiv",
+        options=titles,
+        label_visibility="collapsed",
+        help="Yes it's a pun!",
+
     )
     
     # Find paper_id for selected title
@@ -98,6 +138,7 @@ if not uploaded_file and paper_titles:
 
 # Create Paper instance based on selection or upload
 if uploaded_file is not None:
+    # paper_title = st.sidebar.text_input("Paper Title", value="")
     # Uploaded file takes precedence
     paper = Paper.from_file_uploader(uploaded_file)
 elif selected_paper_id:
@@ -111,13 +152,20 @@ else:
 # Check if this document has annotations or has been parsed
 has_annotations = paper.has_annotations()
 
+# st.sidebar.divider()
+
 parse_doc_button = st.sidebar.empty()
+parse_doc_info = st.sidebar.empty()
 
-
+st.sidebar.divider()
 # Add audio toggle to sidebar
-st.sidebar.markdown("### Audio Settings")
+st.sidebar.header("Paper Actions")
+summarize_paper_button = st.sidebar.empty()
+
 audio_enabled = st.sidebar.toggle("Enable Audio", value=False)
-default_audio_voice = st.sidebar.selectbox("Default Audio Voice", options=["Alloy", "Joe"], disabled=not audio_enabled)
+default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
+                        options=["Alloy", "Joe", "Felicity", "Amelia", "Hope"], 
+                        disabled=not audio_enabled)
 
 if st.session_state.summary_audio:
     st.session_state.summary_audio.default_audio_voice = default_audio_voice
@@ -198,8 +246,8 @@ if parse_doc_button.button("Parse Document", key="parse_document", disabled=pape
 
 # Summarize Document button - only show if document is parsed
 if st.session_state.is_parsed:
-    st.sidebar.markdown("### Document Actions")
-    if st.sidebar.button("Summarize Document", key="summarize_document"):
+    # st.sidebar.markdown("### Document Actions")
+    if summarize_paper_button.button("Summarize the Paper", key="summarize_document"):
         with st.spinner("Summarizing document..."):
             st.session_state.summarizer.summarize_all_sections()
         st.rerun()
@@ -242,17 +290,63 @@ def show_annotation(annotation):
         markdown_tab.markdown(annotation["group_text"])
         raw_json_tab.json(annotation)
 
+
+
         if summary_tab.button("Regenerate Summary", key=f"regenerate_summary_{group_id}", type="primary"):
             summary = st.session_state.summarizer.summarize_section(group_id, override_summary=True)
             if st.session_state.summary_audio:
                 st.session_state.summary_audio.delete_audio_file(group_id)
             st.rerun()
         
+        # Use the default voice selected in the sidebar
+        selected_voice = default_audio_voice
+        
+        # Regenerate audio button with selected voice
+        regenerate_audio_button = summary_tab.button(f"[Re]generate Audio ({selected_voice})", key=f"regenerate_audio_{group_id}", 
+                type="primary", disabled=not audio_enabled, 
+                help=f"This will regenerate the audio for the selected section using the '{selected_voice}' voice")
+        if regenerate_audio_button:
+            if st.session_state.summary_audio:
+                with st.spinner("Generating audio..."):
+                    st.session_state.summary_audio.delete_audio_file(group_id, voice=selected_voice)
+                    # Set the voice as the default temporarily for this generation
+                    original_voice = st.session_state.summary_audio.default_audio_voice
+                    st.session_state.summary_audio.default_audio_voice = selected_voice
+                    st.session_state.summary_audio.save_summary_audio_to_file(group_id, summary)
+                    # Restore original default voice
+                    st.session_state.summary_audio.default_audio_voice = original_voice
 
+            st.rerun()
+        
         # Only show audio if enabled and summary_audio handler is initialized
         if audio_enabled and st.session_state.summary_audio:
-            session_audio = st.session_state.summary_audio.get_audio_bytes(group_id, summary)
-            summary_tab.audio(session_audio, format="audio/mp3")
+            # Check if we have audio files for this section
+            audio_mapping = st.session_state.summary_audio._audio_mapping
+            if group_id in audio_mapping and audio_mapping[group_id]:
+                # Get available voices for this section using utility function
+                voice_options, voice_paths = get_available_voices_for_section(group_id, audio_mapping)
+                
+                # Show dropdown to select voice if multiple options available
+                if len(voice_options) > 1:
+                    selected_audio_voice = summary_tab.selectbox(
+                        "Available Audio Narrations",
+                        options=voice_options,
+                        key=f"audio_select_{group_id}"
+                    )
+                    # Get the selected audio file path
+                    selected_path = voice_paths.get(selected_audio_voice)
+                    if selected_path:
+                        with open(selected_path, "rb") as f:
+                            audio_bytes = f.read()
+                        summary_tab.audio(audio_bytes, format="audio/mp3")
+                else:
+                    # If only one audio file, just play it directly
+                    session_audio = st.session_state.summary_audio.get_audio_bytes(group_id)
+                    summary_tab.audio(session_audio, format="audio/mp3")
+            else:
+                summary_tab.info("No audio available for this section. Generate audio first.")
+        elif not audio_enabled and st.session_state.summary_audio:
+            summary_tab.info("Audio is disabled. Toggle 'Enable Audio' in the sidebar to hear summaries.")
         elif not audio_enabled and st.session_state.summary_audio:
             summary_tab.info("Audio is disabled. Toggle 'Enable Audio' in the sidebar to hear summaries.")
 
@@ -274,9 +368,9 @@ with col_l.container(height=container_height):
 # Add an appropriate message based on the document state
 if not st.session_state.is_parsed:
     if paper.has_annotations():
-        st.sidebar.info("⚠️ Annotations exist but haven't been loaded yet. Please reload the page.")
+        parse_doc_info.info("⚠️ Annotations exist but haven't been loaded yet. Please reload the page.")
     else:
-        st.sidebar.info("📋 Click 'Parse Document' to analyze the paper and see annotations.")
+        parse_doc_info.info("📋 Click 'Parse Document' to analyze the paper and see annotations.")
 
 
 # st.write(st.session_state["summarizer"]._summaries)

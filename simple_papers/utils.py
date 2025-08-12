@@ -4,11 +4,16 @@ import io
 import streamlit as st
 import os
 from openai import OpenAI
+from loguru import logger
 
 # Voice mapping dictionary: name -> (engine, voice_id)
 VOICE_MAPPING = {
     "Football": ("elevenlabs", "gU0LNdkMOQCOrPrwtbee"),  # Default ElevenLabs voice
     "Joe": ("elevenlabs", "ch0vU2DwfJVmFG2iZy89"),  # Another ElevenLabs voice
+    "Felicity": ("elevenlabs", "aTbnroHRGIomiKpqAQR8"),
+    "Amelia": ("elevenlabs", "ZF6FPAbjXT4488VcRRnw"),
+    "Hope": ("elevenlabs", "uYXf8XasLslADfZ2MB4u"),
+
     "Alloy": ("openai", "alloy"),  # OpenAI voice
     "Echo": ("openai", "echo"),  # OpenAI voice
     "Fable": ("openai", "fable"),  # OpenAI voice
@@ -136,10 +141,13 @@ def convert_to_speech_openai(text: str, voice: str = "alloy", model: str = "tts-
     """
     try:
         client = get_openai_client()
+        audio_speed = 1.1
+        logger.info(f"Generating audio with speed: {audio_speed}")
         response = client.audio.speech.create(
             model=model,
             voice=voice,
             input=text,
+            speed=audio_speed,
         )
         return response
     except Exception as e:
@@ -173,7 +181,8 @@ def convert_to_speech_elevenlabs(text: str, voice_id: str = "0S5oIfi8zOZixuSj8K6
     try:
         # Get ElevenLabs client
         client = get_elevenlabs_client()
-        
+        audio_speed = 1.1
+        logger.info(f"Generating audio with speed: {audio_speed}")
         # Generate audio from text with specific voice ID
         response = client.text_to_speech.convert(
             text=text,
@@ -183,8 +192,8 @@ def convert_to_speech_elevenlabs(text: str, voice_id: str = "0S5oIfi8zOZixuSj8K6
             voice_settings=VoiceSettings(
                 stability=0.5,
                 similarity_boost=0.75,
-                style=0.0,
-                speed=1.15,
+                style=0.2,
+                speed=audio_speed,
                 use_speaker_boost=True
             )
         )

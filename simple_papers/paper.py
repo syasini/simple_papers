@@ -174,39 +174,43 @@ class Paper:
             raise
     
     @classmethod
-    def from_file_uploader(cls, uploaded_file: bytes, parsed_doc: ParsedDocument = None):
+    def from_file_uploader(cls, uploaded_file, parsed_doc: ParsedDocument = None):
         """
-        Create a Paper object from a file uploaded by the user
+        Create a Paper object from a file uploaded through streamlit's file_uploader.
         
         Parameters
         ----------
-        uploaded_file : bytes
-            The uploaded file
+        uploaded_file : UploadedFile
+            The uploaded file object from streamlit's file_uploader
         parsed_doc : ParsedDocument, optional
             The parsed document, by default None
             
         Returns
         -------
         Paper
-            The Paper object
+            The Paper object with the relative path for better portability
         """
-        import tempfile
-        import os
+        from simple_papers.path_handler import PathHandler
         
-        # Create a temporary directory if it doesn't exist
-        temp_dir = Path("temp")
-        temp_dir.mkdir(exist_ok=True)
+        # Get original filename
+        original_filename = uploaded_file.name
         
-        # Create temporary file for the uploaded PDF
-        file_name = f"{os.urandom(8).hex()}.pdf"
-        file_path = temp_dir.joinpath(file_name)
+        # Create paths for the uploaded file using PathHandler
+        # Get both absolute path (for writing) and relative path (for storage)
+        abs_file_path, rel_file_path, _ = PathHandler.create_path_for_uploaded_file(original_filename)
         
-        # Write the uploaded file to disk
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file)
+        # Write the uploaded file to disk using the absolute path
+        with open(abs_file_path, "wb") as f:
+            f.write(uploaded_file.read())
         
-        # Create a Paper object from the file path
-        return cls(file_path, parsed_doc)
+        # Reset the file pointer for future reads if needed
+        uploaded_file.seek(0)
+        
+        logger.info(f"Saved uploaded file to {abs_file_path}")
+        logger.info(f"Using relative path {rel_file_path} for paper registry")
+        
+        # Create a Paper object from the relative path for better portability
+        return cls(rel_file_path, parsed_doc)
     
     def get_annotation(self) -> Annotation:
         """

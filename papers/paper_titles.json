@@ -26,5 +26,9 @@
   "2201.11903v6": {
     "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
     "path": "papers/2201.11903v6/2201.11903v6.pdf"
+  },
+  "2112.10752v2": {
+    "title": "High-Resolution Image Synthesis with Latent Diffusion Models",
+    "path": "papers/2112.10752v2/2112.10752v2.pdf"
   }
 }

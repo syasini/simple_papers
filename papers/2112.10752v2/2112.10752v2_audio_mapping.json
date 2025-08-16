@@ -1,0 +1,19 @@
+{
+    "1-abstract": [
+        "papers/2112.10752v2/audio/2112.10752v2_1-abstract_Joe.mp3",
+        "papers/2112.10752v2/audio/2112.10752v2_1-abstract_Amelia.mp3"
+    ],
+    "0-title": [
+        "papers/2112.10752v2/audio/2112.10752v2_0-title_Football.mp3"
+    ],
+    "2-introduction": [
+        "papers/2112.10752v2/audio/2112.10752v2_2-introduction_Joe.mp3",
+        "papers/2112.10752v2/audio/2112.10752v2_2-introduction_Amelia.mp3"
+    ],
+    "3-related": [
+        "papers/2112.10752v2/audio/2112.10752v2_3-related_Amelia.mp3"
+    ],
+    "4-method": [
+        "papers/2112.10752v2/audio/2112.10752v2_4-method_Amelia.mp3"
+    ]
+}

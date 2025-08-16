@@ -11,8 +11,8 @@ from simple_papers.path_handler import PathHandler
 from simple_papers.annotation import Annotation
 from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
-from simple_papers.utils import load_pdf_to_binary, get_page_dimensions_pymupdf
-
+from simple_papers.utils import load_pdf_to_binary, get_page_dimensions_pymupdf, get_n_pages
+from pypdf import PdfReader, PdfWriter
 
 class Paper:
     """Main class to handle papers, their documents, annotations, summaries, and audio.
@@ -40,6 +40,8 @@ class Paper:
         self.parsed_doc = parsed_doc if parsed_doc is not None else None
 
         self.pdf_binary = load_pdf_to_binary(path)
+
+        self.n_pages = get_n_pages(self.pdf_binary)
 
     def load_parsed_doc_if_exists(self) -> Optional[ParsedDocument]:
         """
@@ -174,7 +176,7 @@ class Paper:
             raise
     
     @classmethod
-    def from_file_uploader(cls, uploaded_file, parsed_doc: ParsedDocument = None):
+    def from_file_uploader(cls, uploaded_file, n_pages, parsed_doc: ParsedDocument = None):
         """
         Create a Paper object from a file uploaded through streamlit's file_uploader.
         
@@ -197,15 +199,41 @@ class Paper:
         
         # Create paths for the uploaded file using PathHandler
         # Get both absolute path (for writing) and relative path (for storage)
+        abs_file_path_org, rel_file_path_org, _ = PathHandler.create_path_for_uploaded_file(original_filename, suffix="_original")
         abs_file_path, rel_file_path, _ = PathHandler.create_path_for_uploaded_file(original_filename)
-        
-        # Write the uploaded file to disk using the absolute path
-        with open(abs_file_path, "wb") as f:
-            f.write(uploaded_file.read())
         
         # Reset the file pointer for future reads if needed
         uploaded_file.seek(0)
         
+        # Write the uploaded file to disk using the absolute path
+        with open(abs_file_path_org, "wb") as f:
+            f.write(uploaded_file.read())
+
+        # Reset the file pointer for future reads if needed
+        uploaded_file.seek(0)
+
+        # truncate the pages to n_pages and save to path
+        with open(abs_file_path_org, "rb") as f:
+            reader = PdfReader(f)
+            writer = PdfWriter()
+            
+            # Get the actual number of pages in the PDF
+            actual_pages = len(reader.pages)
+            logger.info(f"PDF has {actual_pages} pages, requested {n_pages} pages")
+            
+            # Calculate how many pages to actually add (minimum of requested and available)
+            pages_to_add = min(n_pages, actual_pages)
+            
+            # Add pages to the new PDF
+            for i in range(pages_to_add):
+                logger.info(f"Adding page {i}")
+                writer.add_page(reader.pages[i])
+                
+            # Write the new PDF
+            with open(abs_file_path, "wb") as f:
+                writer.write(f)
+        
+
         logger.info(f"Saved uploaded file to {abs_file_path}")
         logger.info(f"Using relative path {rel_file_path} for paper registry")
         

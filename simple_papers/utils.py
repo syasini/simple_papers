@@ -5,6 +5,7 @@ import streamlit as st
 import os
 from openai import OpenAI
 from loguru import logger
+from pypdf import PdfReader
 
 # Voice mapping dictionary: name -> (engine, voice_id)
 VOICE_MAPPING = {
@@ -59,6 +60,41 @@ def get_page_dimensions_pymupdf(pdf_path):
     doc.close()
     return 612, 792  # Default letter size
 
+def get_n_pages(pdf):
+    """Get the number of pages in a PDF.
+    
+    Args:
+        pdf: Can be:
+            - A file path (str)
+            - Binary data (bytes) from load_pdf_to_binary
+            - A Streamlit UploadedFile object
+            - A file-like object with read/seek methods
+    
+    Returns:
+        int: Number of pages in the PDF, or 0 if the PDF couldn't be processed.
+    """
+    from io import BytesIO
+    
+    try:
+        # Handle None or empty bytes
+        if pdf is None or (isinstance(pdf, bytes) and len(pdf) == 0):
+            return 0
+        
+        # Handle Streamlit UploadedFile object
+        if hasattr(pdf, 'read') and callable(pdf.read):
+            pdf.seek(0)  # Reset file pointer
+            reader = PdfReader(pdf)
+        # Handle binary data from load_pdf_to_binary
+        elif isinstance(pdf, bytes):
+            reader = PdfReader(BytesIO(pdf))
+        # Handle file path or other file-like object
+        else:
+            reader = PdfReader(pdf)
+        
+        return len(reader.pages)
+    except Exception:
+        # Silently return 0 if any errors occur
+        return -1
 
 def get_annotation_dimensions(l, t, r, b, paper_width, paper_height):
     """Convert normalized bounding box coordinates to annotation dimensions.
@@ -181,7 +217,7 @@ def convert_to_speech_elevenlabs(text: str, voice_id: str = "0S5oIfi8zOZixuSj8K6
     try:
         # Get ElevenLabs client
         client = get_elevenlabs_client()
-        audio_speed = 1.1
+        audio_speed = 1.15
         logger.info(f"Generating audio with speed: {audio_speed}")
         # Generate audio from text with specific voice ID
         response = client.text_to_speech.convert(

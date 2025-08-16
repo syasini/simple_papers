@@ -10,7 +10,7 @@ from simple_papers.paper import Paper
 from simple_papers.annotation import Annotation
 from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
-from simple_papers.utils import text_to_audio_bytes
+from simple_papers.utils import text_to_audio_bytes, get_n_pages
 
 def get_available_voices_for_section(group_id: str, audio_mapping: Dict[str, List[str]]) -> Tuple[List[str], Dict[str, str]]:
     """
@@ -140,7 +140,9 @@ if not uploaded_file and paper_titles:
 if uploaded_file is not None:
     # paper_title = st.sidebar.text_input("Paper Title", value="")
     # Uploaded file takes precedence
-    paper = Paper.from_file_uploader(uploaded_file)
+    max_n_pages = get_n_pages(uploaded_file)
+    n_pages = st.sidebar.number_input("Number of Pages", min_value=1, max_value=max_n_pages, value=max_n_pages)
+    paper = Paper.from_file_uploader(uploaded_file, n_pages)
 elif selected_paper_id:
     # Use selected paper from dropdown
     paper_path = paper_titles[selected_paper_id]["path"]
@@ -199,7 +201,7 @@ col_l.write("## This scary looking paper 👇 ...")
 binary_pdf = paper.pdf_binary
 
 # Parse Document button - only enabled if paper doesn't have annotations
-if parse_doc_button.button("Parse Document", key="parse_document", disabled=paper.has_annotations()):
+if parse_doc_button.button(f"Parse Document ({paper.n_pages} pages)", key="parse_document", disabled=paper.has_annotations()):
     with st.spinner("Parsing document..."):
         # This is where parsing happens
         paper.get_parsed_doc()  # This will parse the document and create the .pkl file if needed
@@ -299,7 +301,7 @@ def show_annotation(annotation):
             st.rerun()
         
         # Use the default voice selected in the sidebar
-        selected_voice = default_audio_voice
+        selected_voice = "Football" if "title" in group_id else default_audio_voice
         
         # Regenerate audio button with selected voice
         regenerate_audio_button = summary_tab.button(f"[Re]generate Audio ({selected_voice})", key=f"regenerate_audio_{group_id}", 

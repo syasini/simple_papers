@@ -45,7 +45,7 @@ class PathHandler:
         return self.original_path
 
     @staticmethod
-    def create_path_for_uploaded_file(uploaded_file_name: str):
+    def create_path_for_uploaded_file(uploaded_file_name: str, suffix: str = ""):
         """
         Create an organized path for an uploaded file in the papers directory.
         
@@ -76,10 +76,10 @@ class PathHandler:
         paper_dir.mkdir(exist_ok=True)
         
         # Full absolute path for the PDF file
-        abs_pdf_path = paper_dir.joinpath(f"{clean_name}.pdf")
+        abs_pdf_path = paper_dir.joinpath(f"{clean_name}{suffix}.pdf")
         
         # Create the relative path for storage in registry
         # Format: papers/paper_name/paper_name.pdf
-        rel_pdf_path = f"papers/{clean_name}/{clean_name}.pdf"
+        rel_pdf_path = f"papers/{clean_name}/{clean_name}{suffix}.pdf"
         
         return abs_pdf_path, rel_pdf_path, papers_dir

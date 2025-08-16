@@ -17,12 +17,13 @@ authors = [
 
 # List of runtime dependencies
 dependencies = [
-    "streamlit==1.41.1",
+    "streamlit~=1.47.0",
     "awswrangler==3.11.0",
     "pytest>=8.3.4",
     "openai>=1.61.1",
     "ipykernel>=6.7.0",
     "agentic_doc>=0.1.0",
+    "pypdf>=5.3.1,<6.0.0",
 ]
 
 [project.urls]

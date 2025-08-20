@@ -9,7 +9,7 @@ version = "0.0.0"
 description = "A better way to read scientific papers"
 readme = "README.md"
 
-requires-python = ">=3.11"
+requires-python = "==3.12.8"
 
 authors = [
     { name = "Siavash Yasini", email = "siavash.yasini@gmail.com" }

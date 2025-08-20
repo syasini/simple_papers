@@ -30,5 +30,9 @@
   "2112.10752v2": {
     "title": "High-Resolution Image Synthesis with Latent Diffusion Models",
     "path": "papers/2112.10752v2/2112.10752v2.pdf"
+  },
+  "1705.07874v2": {
+    "title": "A Unified Approach to Interpreting Model Predictions",
+    "path": "papers/1705.07874v2/1705.07874v2.pdf"
   }
 }

@@ -27,6 +27,7 @@ dependencies = [
     "loguru>=0.7.3",
     "streamlit-pdf-viewer>=0.0.26",
     "langchain-aws>=0.2.31",
+    "elevenlabs>=2.11.0",
 ]
 
 [project.urls]

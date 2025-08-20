@@ -170,7 +170,7 @@ summarize_paper_button = st.sidebar.empty()
 
 auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=False)
 default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
-                        options=["Alloy", "Joe", "Felicity", "Amelia", "Hope"], 
+                        options=["Joe", "Felicity", "Amelia", "Hope", "Alloy"], 
                         )
 
 if st.session_state.summary_audio:

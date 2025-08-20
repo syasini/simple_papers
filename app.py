@@ -12,6 +12,10 @@ from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
 from simple_papers.utils import text_to_audio_bytes, get_n_pages
 
+DEV_MODE = st.secrets["DEV_MODE"]
+DEV_LOCK = not DEV_MODE
+dev_lock_info = "This feature is only available in dev mode"
+
 def get_available_voices_for_section(group_id: str, audio_mapping: Dict[str, List[str]]) -> Tuple[List[str], Dict[str, str]]:
     """
     Extract available voices for a section from the audio mapping.
@@ -86,8 +90,10 @@ st.sidebar.header("Paper Settings")
 
 
 # File upload section
-st.sidebar.markdown("#### Bring Your Own Paper (BYOP)")
-uploaded_file = st.sidebar.file_uploader("Bring Your Own Paper (BYOP)", type="pdf", label_visibility="collapsed")
+st.sidebar.markdown("#### Bring Your Own Paper (BYOP)", help=dev_lock_info)
+uploaded_file = st.sidebar.file_uploader("Bring Your Own Paper (BYOP)", type="pdf", label_visibility="collapsed", 
+                                            disabled=DEV_LOCK,
+                                            )
 
 # Reset state when a file is uploaded
 if uploaded_file is not None:
@@ -109,13 +115,11 @@ if not uploaded_file and paper_titles:
     
     # Show dropdown
     st.sidebar.caption(" or")
-    st.sidebar.markdown("#### Select From the Paper arXiv", help="Yes it's a pun!")
+    st.sidebar.markdown("#### Select From the Paper arXiv", help="Yes it's a double entendre!")
     selected_title = st.sidebar.selectbox(
         "Select From the Paper arXiv",
         options=titles,
         label_visibility="collapsed",
-        help="Yes it's a pun!",
-
     )
     
     # Find paper_id for selected title
@@ -164,10 +168,10 @@ st.sidebar.divider()
 st.sidebar.header("Paper Actions")
 summarize_paper_button = st.sidebar.empty()
 
-audio_enabled = st.sidebar.toggle("Enable Audio", value=False)
+auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=False)
 default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
                         options=["Alloy", "Joe", "Felicity", "Amelia", "Hope"], 
-                        disabled=not audio_enabled)
+                        )
 
 if st.session_state.summary_audio:
     st.session_state.summary_audio.default_audio_voice = default_audio_voice
@@ -249,14 +253,19 @@ if parse_doc_button.button(f"Parse Document ({paper.n_pages} pages)", key="parse
 # Summarize Document button - only show if document is parsed
 if st.session_state.is_parsed:
     # st.sidebar.markdown("### Document Actions")
-    if summarize_paper_button.button("Summarize the Paper", key="summarize_document"):
+    if summarize_paper_button.button("Summarize the Paper", key="summarize_document", 
+                                            disabled=DEV_LOCK,
+                                            help=dev_lock_info):
         with st.spinner("Summarizing document..."):
             st.session_state.summarizer.summarize_all_sections()
         st.rerun()
 
     
     # Generate All Audio button - always show but disable when audio is off
-    if st.sidebar.button("Generate All Audio", key="generate_all_audio", disabled=not audio_enabled):
+    if st.sidebar.button("Generate All Audio", key="generate_all_audio", 
+                            disabled=DEV_LOCK,
+                            help=dev_lock_info,
+                            ):
         with st.spinner("Generating audio for all summaries..."):
             # Initialize the summary audio handler if not done yet
             if st.session_state.summary_audio is None:
@@ -272,8 +281,8 @@ if st.session_state.is_parsed:
             else:
                 st.sidebar.warning("No summaries found. Generate summaries first.")
                 
-    if not audio_enabled:
-        st.sidebar.info("Enable audio to generate and play audio summaries.")
+    # if not audio_enabled:
+    #     st.sidebar.info("Enable audio to generate and play audio summaries.")
 
 
 def show_annotation(annotation):
@@ -294,7 +303,10 @@ def show_annotation(annotation):
 
 
 
-        if summary_tab.button("Regenerate Summary", key=f"regenerate_summary_{group_id}", type="primary"):
+        if summary_tab.button("Regenerate Summary", key=f"regenerate_summary_{group_id}", type="primary", 
+                            disabled=DEV_LOCK,
+                            help=dev_lock_info,
+        ):
             summary = st.session_state.summarizer.summarize_section(group_id, override_summary=True)
             if st.session_state.summary_audio:
                 st.session_state.summary_audio.delete_audio_file(group_id)
@@ -305,8 +317,8 @@ def show_annotation(annotation):
         
         # Regenerate audio button with selected voice
         regenerate_audio_button = summary_tab.button(f"[Re]generate Audio ({selected_voice})", key=f"regenerate_audio_{group_id}", 
-                type="primary", disabled=not audio_enabled, 
-                help=f"This will regenerate the audio for the selected section using the '{selected_voice}' voice")
+                type="primary", disabled=DEV_LOCK,
+                help=f"This will regenerate the audio for the selected section using the '{selected_voice}' voice. {dev_lock_info}")
         if regenerate_audio_button:
             if st.session_state.summary_audio:
                 with st.spinner("Generating audio..."):
@@ -321,7 +333,7 @@ def show_annotation(annotation):
             st.rerun()
         
         # Only show audio if enabled and summary_audio handler is initialized
-        if audio_enabled and st.session_state.summary_audio:
+        if st.session_state.summary_audio:
             # Check if we have audio files for this section
             audio_mapping = st.session_state.summary_audio._audio_mapping
             if group_id in audio_mapping and audio_mapping[group_id]:
@@ -330,26 +342,28 @@ def show_annotation(annotation):
                 
                 # Show dropdown to select voice if multiple options available
                 if len(voice_options) > 1:
+                    # if the default voice is available, select it
+                    selected_audio_voice = default_audio_voice if default_audio_voice in voice_options else voice_options[0]
+                    
                     selected_audio_voice = summary_tab.selectbox(
                         "Available Audio Narrations",
                         options=voice_options,
-                        key=f"audio_select_{group_id}"
+                        key=f"audio_select_{group_id}",
+                        index=voice_options.index(selected_audio_voice)
                     )
                     # Get the selected audio file path
                     selected_path = voice_paths.get(selected_audio_voice)
                     if selected_path:
                         with open(selected_path, "rb") as f:
                             audio_bytes = f.read()
-                        summary_tab.audio(audio_bytes, format="audio/mp3")
+                        summary_tab.audio(audio_bytes, format="audio/mp3", autoplay=auto_play_audio)
                 else:
                     # If only one audio file, just play it directly
                     session_audio = st.session_state.summary_audio.get_audio_bytes(group_id)
-                    summary_tab.audio(session_audio, format="audio/mp3")
+                    summary_tab.audio(session_audio, format="audio/mp3", autoplay=auto_play_audio)
             else:
                 summary_tab.info("No audio available for this section. Generate audio first.")
-        elif not audio_enabled and st.session_state.summary_audio:
-            summary_tab.info("Audio is disabled. Toggle 'Enable Audio' in the sidebar to hear summaries.")
-        elif not audio_enabled and st.session_state.summary_audio:
+        elif st.session_state.summary_audio:
             summary_tab.info("Audio is disabled. Toggle 'Enable Audio' in the sidebar to hear summaries.")
 
 

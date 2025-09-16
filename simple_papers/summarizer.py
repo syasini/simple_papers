@@ -9,6 +9,7 @@ from langchain_core.prompts import PromptTemplate
 
 # Import local modules
 from simple_papers.path_handler import PathHandler
+from simple_papers.wiki import WikiUrlExtractor
 
 
 class Summarizer:
@@ -82,13 +83,14 @@ class Summarizer:
         </usage_guidance>
 
         <format>
-        For each section:
+        For each summary:
         1. **Start with a short, playful opener** that highlights the main idea of the section
-        2. **Follow with 2 to 4 bullet points** that:
+        2. **Follow with 2 to 3 bullet points** that:
         - Break down the core ideas in plain language
         - Use analogies or examples if helpful
-        - Include brief "so what?" explanations if it helps clarify why something matters
-        3. **Close with a short connector sentence** (optional), like "So basically…" to wrap it up
+        3. If summarizing a section with a whole number (e.g. "2. Background" as opposed to "2.1 similar models") include a brief "so what?" explanations if it helps clarify why something matters
+        - for subsections (e.g. 3.2, 4.3.2) skip the "so what" explanation. subsections can typically be identified by the presence of a period in the section number.
+        4. **Close with a short connector sentence** (optional), like "So basically…" to wrap it up
 
         <markdown_formatting>
         - Always apply correct markdown formatting to section titles, even if the original input is missing it.
@@ -138,6 +140,7 @@ class Summarizer:
         self.paper_path = paper_path
         self.path_handler = PathHandler(paper_path)
         self.summaries_path = self.path_handler.summaries_path
+        self.keywords_path = self.path_handler.keywords_path
         self.annotations_list = annotations_list
         self.abstract = self.get_abstract()
         self._llm = None
@@ -407,3 +410,87 @@ class Summarizer:
                 results[group_id] = f"Failed to generate summary: {str(e)}"
         
         return results
+
+    def extract_all_keywords(self):
+        """Extract keywords from all sections."""
+
+        
+
+        # load the summaries from the summaries file
+        if self.summaries_path.exists():
+            with open(self.summaries_path, "r") as f:
+                summaries = json.load(f)
+
+            for group_id, summary in summaries.items():
+                if group_id in ["0-title", "1-title"]:
+                    continue
+                elif "reference" in group_id:
+                    continue
+                else:
+                    wiki_extractor = WikiUrlExtractor(self.paper_path, summary)
+                    wiki_extractor.extract_keywords()
+
+    # def highlight_summary_keywords(self, summary: str):
+    #     logger.info(self.keywords_path)
+    #     if self.keywords_path.exists():
+    #         with open(self.keywords_path, "r") as f:
+    #             keywords = json.load(f)
+    #         for keyword in keywords:
+    #             logger.info(keyword)
+    #             keyword_url = f"https://www.google.com/search?q=what+is"
+    #             logger.info(keyword_url)
+    #             logger.info(summary)
+    #             # Check if keyword is already in markdown link format or is part of existing link text
+    #             import re
+    #             # Pattern to match keyword that's not inside square brackets of markdown links
+    #             pattern = r'(?<!\[)(?<!\[[^\]]*)\b' + re.escape(keyword) + r'\b(?![^\[]*\])'
+    #             if re.search(pattern, summary):
+    #                 summary = re.sub(pattern, f"[{keyword}]({keyword_url})", summary)
+    #     return summary
+        
+    def highlight_summary_keywords(self, summary):
+        """Highlight keywords in the summary with links"""
+        if not summary:
+            return summary
+
+        if self.keywords_path.exists():
+            with open(self.keywords_path, "r") as f:
+                keywords = json.load(f)
+        else:
+            keywords = []
+            
+        for keyword in keywords:
+            if keyword.lower() in summary.lower():
+                import re
+                
+                # Find all markdown links first
+                link_positions = []
+                for link_match in re.finditer(r'\[([^\]]*)\]\([^\)]*\)', summary):
+                    link_positions.append((link_match.start(), link_match.end()))
+                
+                # Find all instances of the keyword
+                keyword_pattern = r'\b' + re.escape(keyword) + r'\b'
+                result = summary
+                
+                # Process matches from end to beginning to avoid index shifts
+                for match in reversed(list(re.finditer(keyword_pattern, summary))):
+                    start, end = match.span()
+                    
+                    # Check if this keyword is inside any markdown link
+                    in_link = False
+                    for link_start, link_end in link_positions:
+                        if link_start <= start and end <= link_end:
+                            in_link = True
+                            break
+                    
+                    # If not in a link, replace it
+                    if not in_link:
+                        keyword_url = f"https://www.google.com/search?q=what+is+{keyword.replace(' ', '+')}+in+machine+learning"
+                        replacement = f"[{keyword}]({keyword_url})"
+                        result = result[:start] + replacement + result[end:]
+                        
+                summary = result
+                
+        return summary       
+
+

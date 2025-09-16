@@ -11,6 +11,11 @@ from simple_papers.annotation import Annotation
 from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
 from simple_papers.utils import text_to_audio_bytes, get_n_pages
+from simple_papers.wiki import WikiUrlExtractor
+
+from dotenv import load_dotenv
+load_dotenv()
+
 
 DEV_MODE = st.secrets["DEV_MODE"]
 DEV_LOCK = not DEV_MODE
@@ -53,8 +58,9 @@ st.sidebar.image("media/logo_small.png")
 
 # UI Configuration
 with st.sidebar.expander("Display Settings"):
+
     container_height = st.number_input("Container Height", min_value=100, max_value=2000, value=950, step=50)
-    zoom_level = st.number_input("Zoom Level", min_value=1.0, max_value=2.0, value=1.2, step=0.1)
+    zoom_level = st.number_input("Zoom Level", min_value=.7, max_value=2.0, value=1.1, step=0.1)
     show_page_separator = st.checkbox("Show Page Separator", value=True)
 
 # Initialize session state variables
@@ -167,6 +173,7 @@ st.sidebar.divider()
 # Add audio toggle to sidebar
 st.sidebar.header("Paper Actions")
 summarize_paper_button = st.sidebar.empty()
+extract_keywords_button = st.sidebar.empty()
 
 auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=False)
 default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
@@ -260,6 +267,13 @@ if st.session_state.is_parsed:
             st.session_state.summarizer.summarize_all_sections()
         st.rerun()
 
+    if extract_keywords_button.button("Extract Keywords", key="extract_all_keywords", 
+                                            disabled=DEV_LOCK,
+                                            help=dev_lock_info):
+        with st.spinner("Extracting keywords..."):
+            st.session_state.summarizer.extract_all_keywords()
+        st.rerun()
+
     
     # Generate All Audio button - always show but disable when audio is off
     if st.sidebar.button("Generate All Audio", key="generate_all_audio", 
@@ -292,25 +306,30 @@ def show_annotation(annotation):
     
     group_id = annotation["group"]
     summary = st.session_state.summarizer.summarize_section(group_id)
+    summary_highlighted = st.session_state.summarizer.highlight_summary_keywords(summary)
     col_r.write("## is actually pretty simple! 💁")
 
-    with col_r.container(height=container_height):
+    with col_r.container(height=container_height,):
         summary_tab, markdown_tab, raw_json_tab = st.tabs(["Summary", "Markdown", "Raw JSON"])
 
-        summary_tab.markdown(summary)
+        
+        summary_tab.markdown(summary_highlighted)
+        
         markdown_tab.markdown(annotation["group_text"])
         raw_json_tab.json(annotation)
 
+        regen_summary_button, extract_kw_button = summary_tab.columns(2, vertical_alignment="bottom")
 
-
-        if summary_tab.button("Regenerate Summary", key=f"regenerate_summary_{group_id}", type="primary", 
+        if regen_summary_button.button("Regenerate Summary", key=f"regenerate_summary_{group_id}", type="primary", 
                             disabled=DEV_LOCK,
                             help=dev_lock_info,
         ):
             summary = st.session_state.summarizer.summarize_section(group_id, override_summary=True)
+            
             if st.session_state.summary_audio:
                 st.session_state.summary_audio.delete_audio_file(group_id)
             st.rerun()
+        
         
         # Use the default voice selected in the sidebar
         selected_voice = "Football" if "title" in group_id else default_audio_voice
@@ -365,8 +384,15 @@ def show_annotation(annotation):
                 summary_tab.info("No audio available for this section. Generate audio first.")
         elif st.session_state.summary_audio:
             summary_tab.info("Audio is disabled. Toggle 'Enable Audio' in the sidebar to hear summaries.")
+        
 
-
+        if extract_kw_button.button("Extract Keywords", key="extract_keywords"):
+            with st.spinner("Extracting Technical Keywords..."):
+                wiki_url_extractor = WikiUrlExtractor(paper_path=paper.path, text=summary)
+                urls = wiki_url_extractor.extract_keywords()
+                st.session_state.urls = urls
+                st.rerun()
+        
 
 with col_l.container(height=container_height):
     pdf_viewer(

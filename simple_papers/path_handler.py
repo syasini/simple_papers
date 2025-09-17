@@ -31,6 +31,7 @@ class PathHandler:
         self.summaries_path = self.dir.joinpath(f"{self.name}_summaries.json")
         self.audio_mapping_path = self.dir.joinpath(f"{self.name}_audio_mapping.json")
         self.audio_dir = self.dir.joinpath("audio")
+        self.keywords_path = self.dir.joinpath(f"{self.name}_keywords.json")
         
     @property
     def path(self):

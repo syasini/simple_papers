@@ -34,5 +34,9 @@
   "1705.07874v2": {
     "title": "A Unified Approach to Interpreting Model Predictions",
     "path": "papers/1705.07874v2/1705.07874v2.pdf"
+  },
+  "1810.04805v2": {
+    "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    "path": "papers/1810.04805v2/1810.04805v2.pdf"
   }
 }

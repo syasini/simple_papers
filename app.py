@@ -179,7 +179,7 @@ extract_keywords_button = st.sidebar.empty()
 
 st.sidebar.divider()
 st.sidebar.header("Audio Settings")
-auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=False)
+auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=not DEV_LOCK)
 default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
                         options=["Joe", "Felicity", "Amelia", "Hope", "Alloy"], 
                         )

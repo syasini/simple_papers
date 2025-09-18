@@ -84,13 +84,14 @@ class Summarizer:
 
         <format>
         For each summary:
-        1. **Start with a short, playful opener** that highlights the main idea of the section
-        2. **Follow with 2 to 3 bullet points** that:
+        1. **For main sections (whole numbers like "2. Background")**: Start with a short, playful opener that highlights the main idea of the section
+        2. **For subsections (like "3.1", "4.2.1")**: Skip the opener and go straight to bullet points
+        3. **Follow with 2 to 3 bullet points** that:
         - Break down the core ideas in plain language
         - Use analogies or examples if helpful
-        3. If summarizing a section with a whole number (e.g. "2. Background" as opposed to "2.1 similar models") include a brief "so what?" explanations if it helps clarify why something matters
-        - for subsections (e.g. 3.2, 4.3.2) skip the "so what" explanation. subsections can typically be identified by the presence of a period in the section number.
-        4. **Close with a short connector sentence** (optional), like "So basically…" to wrap it up
+        4. If summarizing a main section (whole number), include a brief "so what?" explanation if it helps clarify why something matters
+        - for subsections skip the "so what" explanation
+        5. **Close with a short connector sentence** (optional), like "So basically…" to wrap it up
 
         <markdown_formatting>
         - Always apply correct markdown formatting to section titles, even if the original input is missing it.
@@ -98,6 +99,8 @@ class Summarizer:
         - Use `##`, `###`, etc. for subsections based on numerical hierarchy (e.g., "## 3.1 Results", "### 4.2.1 Details").
         - DO NOT change the wording of the section title — preserve the original title text exactly.
         - Keep the properly formatted heading at the top of the summary before the explanation begins.
+        - Start each summary with an italicized opening phrase using *italic text* (e.g., *Time to meet the star of the show*)
+        - Separate each bullet point with a new line (\n) for proper formatting and readability.
         </markdown_formatting>
         </format>
 
@@ -108,14 +111,21 @@ class Summarizer:
         <abstract>
         {abstract}
         </abstract>
+
+        These are the opening of existing summaries to avoid repetition:
+        <existing_summaries_opening>
+        {existing_summaries_opening}
+        </existing_summaries_opening>
         </context>
 
         <instructions>
         - Use the abstract to stay grounded in the paper's main goals
         - Do NOT copy original text — always paraphrase in your own voice
-        - Be concise — no more than 4 bullet points
+        - Be concise — no more than 3 bullet points
         - Focus on clarity and lightness — aim to teach and delight, not overwhelm
         - Avoid too much repetition in phrasing or jokes
+        - Use the existing opening of summaries from other sections to avoid repetition
+        - Always start with an italicized opening phrase using *italic text* to grab attention and set the tone (e.g., *Time to meet the star of the show*, *Let's dive into the nitty-gritty*)
         </instructions>
         </system>
 
@@ -147,7 +157,8 @@ class Summarizer:
         
         # Load summaries from file if it exists
         self._summaries = self._load_summaries()
-        
+    
+
     def _load_summaries(self) -> Dict[str, str]:
         """Load summaries from JSON file if it exists.
         
@@ -178,7 +189,7 @@ class Summarizer:
     @property
     def summaries(self) -> Dict[str, str]:
         """Get summaries for all sections."""
-        return self._summaries
+        return self._load_summaries()
     
     def get_abstract(self) -> str:
         """Extract the abstract from annotations list.
@@ -359,6 +370,13 @@ class Summarizer:
         # Use default system prompt template if not specified
         template = system_prompt_template or self.SYSTEM_PROMPT_TEMPLATE
         
+        # get the opening of existing summaries to avoid repetition
+        existing_summaries = {group_id: summary[:150] 
+            for group_id, summary in self.summaries.items()
+            if group_id != "0-title" and group_id != "1-title"}
+        existing_summaries_opening = "\n\n".join(existing_summaries.values())        
+        logger.debug(f"Existing summaries openning: {existing_summaries_opening}")
+        
         # Create a prompt template from the system prompt template
         prompt_template = PromptTemplate.from_template(template)
         
@@ -366,7 +384,8 @@ class Summarizer:
             # Format the prompt with abstract and text to summarize
             formatted_prompt = prompt_template.format(
                 abstract=self.abstract,
-                text=text
+                text=text,
+                existing_summaries_opening=existing_summaries_opening
             )
             
             # Log the prompt for debugging (optional)
@@ -414,7 +433,6 @@ class Summarizer:
     def extract_all_keywords(self):
         """Extract keywords from all sections."""
 
-        
 
         # load the summaries from the summaries file
         if self.summaries_path.exists():
@@ -447,6 +465,12 @@ class Summarizer:
     #             if re.search(pattern, summary):
     #                 summary = re.sub(pattern, f"[{keyword}]({keyword_url})", summary)
     #     return summary
+
+    def percentage_summarized(self):
+        """Calculate percentage of sections summarized"""
+        
+        n_groups = len(set([annot["group"] for annot in self.annotations_list]))
+        return len(self.summaries) / n_groups
         
     def highlight_summary_keywords(self, summary):
         """Highlight keywords in the summary with links"""

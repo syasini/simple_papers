@@ -172,9 +172,13 @@ parse_doc_info = st.sidebar.empty()
 st.sidebar.divider()
 # Add audio toggle to sidebar
 st.sidebar.header("Paper Actions")
+
+summary_progess = st.sidebar.empty()
 summarize_paper_button = st.sidebar.empty()
 extract_keywords_button = st.sidebar.empty()
 
+st.sidebar.divider()
+st.sidebar.header("Audio Settings")
 auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=False)
 default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
                         options=["Joe", "Felicity", "Amelia", "Hope", "Alloy"], 
@@ -201,7 +205,6 @@ if has_annotations and not st.session_state.is_parsed:
     st.session_state.is_parsed = True
     
     logger.info("Paper is now ready with existing annotations")
-    st.sidebar.success("✓ Paper loaded with existing annotations")
 
 # Display PDF layout
 col_l, col_r = st.columns(2)
@@ -260,14 +263,16 @@ if parse_doc_button.button(f"Parse Document ({paper.n_pages} pages)", key="parse
 # Summarize Document button - only show if document is parsed
 if st.session_state.is_parsed:
     # st.sidebar.markdown("### Document Actions")
-    if summarize_paper_button.button("Summarize the Paper", key="summarize_document", 
+    percentage_summarized = st.session_state.summarizer.percentage_summarized()
+    summary_progess.progress(percentage_summarized, f"{percentage_summarized*100:.0f}% Percentage Summarized")
+    if summarize_paper_button.button("Summarize the Whole Paper", key="summarize_document", 
                                             disabled=DEV_LOCK,
                                             help=dev_lock_info):
         with st.spinner("Summarizing document..."):
             st.session_state.summarizer.summarize_all_sections()
         st.rerun()
 
-    if extract_keywords_button.button("Extract Keywords", key="extract_all_keywords", 
+    if extract_keywords_button.button("Extract All Keywords", key="extract_all_keywords", 
                                             disabled=DEV_LOCK,
                                             help=dev_lock_info):
         with st.spinner("Extracting keywords..."):
@@ -413,7 +418,8 @@ if not st.session_state.is_parsed:
         parse_doc_info.info("⚠️ Annotations exist but haven't been loaded yet. Please reload the page.")
     else:
         parse_doc_info.info("📋 Click 'Parse Document' to analyze the paper and see annotations.")
-
+else:
+    parse_doc_info.success("✓ Paper loaded with existing annotations")
 
 # st.write(st.session_state["summarizer"]._summaries)
 

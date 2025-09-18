@@ -1,5 +1,12 @@
 {
     "1-abstract": [
-        "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Joe.mp3"
+        "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Joe.mp3",
+        "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Hope.mp3"
+    ],
+    "0-title": [
+        "papers/1810.04805v2/audio/1810.04805v2_0-title_Football.mp3"
+    ],
+    "4-unsupervised": [
+        "papers/1810.04805v2/audio/1810.04805v2_4-unsupervised_Hope.mp3"
     ]
 }

@@ -3,12 +3,54 @@
         "papers/1705.07874v2/audio/1705.07874v2_0-title_Football.mp3"
     ],
     "1-abstract": [
-        "papers/1705.07874v2/audio/1705.07874v2_1-abstract_Joe.mp3"
+        "papers/1705.07874v2/audio/1705.07874v2_1-abstract_Joe.mp3",
+        "papers/1705.07874v2/audio/1705.07874v2_1-abstract_Hope.mp3"
     ],
     "13-computational": [
-        "papers/1705.07874v2/audio/1705.07874v2_13-computational_Joe.mp3"
+        "papers/1705.07874v2/audio/1705.07874v2_13-computational_Joe.mp3",
+        "papers/1705.07874v2/audio/1705.07874v2_13-computational_Hope.mp3"
     ],
     "5-lime": [
-        "papers/1705.07874v2/audio/1705.07874v2_5-lime_Felicity.mp3"
+        "papers/1705.07874v2/audio/1705.07874v2_5-lime_Felicity.mp3",
+        "papers/1705.07874v2/audio/1705.07874v2_5-lime_Hope.mp3"
+    ],
+    "4-additive": [
+        "papers/1705.07874v2/audio/1705.07874v2_4-additive_Hope.mp3"
+    ],
+    "2-introduction": [
+        "papers/1705.07874v2/audio/1705.07874v2_2-introduction_Hope.mp3"
+    ],
+    "14-computational": [
+        "papers/1705.07874v2/audio/1705.07874v2_14-computational_Hope.mp3"
+    ],
+    "10-shap": [
+        "papers/1705.07874v2/audio/1705.07874v2_10-shap_Hope.mp3"
+    ],
+    "11-model": [
+        "papers/1705.07874v2/audio/1705.07874v2_11-model_Hope.mp3"
+    ],
+    "12-model": [
+        "papers/1705.07874v2/audio/1705.07874v2_12-model_Hope.mp3"
+    ],
+    "15-consistency": [
+        "papers/1705.07874v2/audio/1705.07874v2_15-consistency_Hope.mp3"
+    ],
+    "16-explaining": [
+        "papers/1705.07874v2/audio/1705.07874v2_16-explaining_Hope.mp3"
+    ],
+    "17-conclusion": [
+        "papers/1705.07874v2/audio/1705.07874v2_17-conclusion_Hope.mp3"
+    ],
+    "3-we": [
+        "papers/1705.07874v2/audio/1705.07874v2_3-we_Hope.mp3"
+    ],
+    "7-layer": [
+        "papers/1705.07874v2/audio/1705.07874v2_7-layer_Hope.mp3"
+    ],
+    "8-classic": [
+        "papers/1705.07874v2/audio/1705.07874v2_8-classic_Hope.mp3"
+    ],
+    "9-simple": [
+        "papers/1705.07874v2/audio/1705.07874v2_9-simple_Hope.mp3"
     ]
 }

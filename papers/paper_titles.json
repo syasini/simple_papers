@@ -30,5 +30,9 @@
   "1810.04805v2": {
     "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
     "path": "papers/1810.04805v2/1810.04805v2.pdf"
+  },
+  "2506.13023v2": {
+    "title": "A Practical Guide for Evaluating LLMs and LLM-Reliant Systems",
+    "path": "papers/2506.13023v2/2506.13023v2.pdf"
   }
 }

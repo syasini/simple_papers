@@ -116,23 +116,40 @@ if uploaded_file is not None:
 selected_paper_id = None
 
 if not uploaded_file and paper_titles:
+    # Get paper_id from URL query parameters
+    query_params = st.query_params
+    url_paper_id = query_params.get("paper", None)
+
     # Create options list from paper titles
     titles = [info["title"] for info in paper_titles.values()]
-    
+
+    # Determine default selection based on URL parameter
+    default_index = 0
+    if url_paper_id and url_paper_id in paper_titles:
+        # Find index of paper from URL
+        for i, (paper_id, info) in enumerate(paper_titles.items()):
+            if paper_id == url_paper_id:
+                default_index = i
+                break
+
     # Show dropdown
     st.sidebar.caption(" or")
     st.sidebar.markdown("#### Select From the Paper arXiv", help="Yes it's a double entendre!")
     selected_title = st.sidebar.selectbox(
         "Select From the Paper arXiv",
         options=titles,
+        index=default_index,
         label_visibility="collapsed",
     )
-    
+
     # Find paper_id for selected title
     for paper_id, info in paper_titles.items():
         if info["title"] == selected_title:
             selected_paper_id = paper_id
             st.sidebar.caption(f"Paper ID: {selected_paper_id}")
+            # Update URL with selected paper
+            if selected_paper_id != url_paper_id:
+                st.query_params.paper = selected_paper_id
             break
     
     
@@ -391,7 +408,7 @@ def show_annotation(annotation):
             summary_tab.info("Audio is disabled. Toggle 'Enable Audio' in the sidebar to hear summaries.")
         
 
-        if extract_kw_button.button("Extract Keywords", key="extract_keywords"):
+        if extract_kw_button.button("Extract Keywords", key="extract_keywords", disabled=DEV_LOCK, help=dev_lock_info):
             with st.spinner("Extracting Technical Keywords..."):
                 wiki_url_extractor = WikiUrlExtractor(paper_path=paper.path, text=summary)
                 urls = wiki_url_extractor.extract_keywords()

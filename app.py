@@ -265,7 +265,7 @@ if st.session_state.is_parsed:
     # st.sidebar.markdown("### Document Actions")
     percentage_summarized = st.session_state.summarizer.percentage_summarized()
     summary_progess.progress(percentage_summarized, f"{percentage_summarized*100:.0f}% Percentage Summarized")
-    if summarize_paper_button.button("Summarize the Whole Paper", key="summarize_document", 
+    if summarize_paper_button.button("Simplify the Whole Paper", key="summarize_document", 
                                             disabled=DEV_LOCK,
                                             help=dev_lock_info):
         with st.spinner("Summarizing document..."):
@@ -315,7 +315,7 @@ def show_annotation(annotation):
     col_r.write("## is actually pretty simple! 💁")
 
     with col_r.container(height=container_height,):
-        summary_tab, markdown_tab, raw_json_tab = st.tabs(["Summary", "Markdown", "Raw JSON"])
+        summary_tab, markdown_tab, raw_json_tab = st.tabs(["Simplified", "Original", "Raw JSON"])
 
         
         summary_tab.markdown(summary_highlighted)

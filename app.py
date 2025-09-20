@@ -282,11 +282,16 @@ if st.session_state.is_parsed:
     # st.sidebar.markdown("### Document Actions")
     percentage_summarized = st.session_state.summarizer.percentage_summarized()
     summary_progess.progress(percentage_summarized, f"{percentage_summarized*100:.0f}% Percentage Summarized")
-    if summarize_paper_button.button("Simplify the Whole Paper", key="summarize_document", 
+    if summarize_paper_button.button("Simplify the Whole Paper", key="summarize_document",
                                             disabled=DEV_LOCK,
                                             help=dev_lock_info):
-        with st.spinner("Summarizing document..."):
-            st.session_state.summarizer.summarize_all_sections()
+
+        # Create progress callback to update the progress bar
+        def update_progress(progress_value, progress_text):
+            summary_progess.progress(progress_value, progress_text)
+
+        # Summarize with progress updates
+        st.session_state.summarizer.summarize_all_sections(progress_callback=update_progress)
         st.rerun()
 
     if extract_keywords_button.button("Extract All Keywords", key="extract_all_keywords", 

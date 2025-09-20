@@ -1,4 +1,5 @@
 import json
+import time
 from loguru import logger
 from typing import Dict, List, Any, Optional
 from pathlib import Path
@@ -316,6 +317,7 @@ class Summarizer:
 
         Now generate a short one-paragraph hype-style **announcement** that:
         - Introduces the title with flair (like it's a big reveal)
+        - Starts with LAAAAAAADIES AND GENTLEMEN! 
         - Calls out the authors like an all-star lineup (use first and last names)
         - Is fun, bold, and a little over-the-top — just like a sports commentator at their peak
         </format>
@@ -330,9 +332,12 @@ class Summarizer:
         """
 
         prompt_template = PromptTemplate.from_template(system_prompt_template).format(title=title)
-        response = self.llm.invoke(prompt_template)
-        
-        return response.content
+
+        try:
+            return self._invoke_with_retry(prompt_template)
+        except Exception as e:
+            logger.error(f"Error in title summarization: {str(e)}")
+            return f"Failed to generate title summary: {str(e)}"
     
     def _get_title(self) -> str:
         """Extract the paper title from annotations list.
@@ -352,16 +357,57 @@ class Summarizer:
         return "References omitted from summary"
     
     
+    def _invoke_with_retry(self, formatted_prompt: str, max_retries: int = 3, base_delay: float = 1.0) -> str:
+        """Invoke LLM with exponential backoff retry logic.
+
+        Parameters
+        ----------
+        formatted_prompt : str
+            The formatted prompt to send
+        max_retries : int
+            Maximum number of retry attempts
+        base_delay : float
+            Base delay in seconds (doubles each retry)
+
+        Returns
+        -------
+        str
+            Model response content
+        """
+        for attempt in range(max_retries + 1):
+            try:
+                response = self.llm.invoke(formatted_prompt)
+
+                # Log if thinking is available in the response
+                if hasattr(response, 'additional_kwargs') and 'thinking' in response.additional_kwargs:
+                    logger.debug(f"Model thinking: {response.additional_kwargs['thinking']}")
+
+                return response.content if hasattr(response, 'content') else str(response)
+
+            except Exception as e:
+                if attempt == max_retries:
+                    # Final attempt failed
+                    raise e
+
+                if "ThrottlingException" in str(e) or "Too many requests" in str(e):
+                    # Calculate exponential backoff delay
+                    delay = base_delay * (2 ** attempt)
+                    logger.warning(f"Rate limit hit, retrying in {delay} seconds... (attempt {attempt + 1}/{max_retries})")
+                    time.sleep(delay)
+                else:
+                    # Non-throttling error, don't retry
+                    raise e
+
     def summarize_text(self, text: str, system_prompt_template: str = None) -> str:
         """Summarize text using AWS Bedrock's Claude model.
-        
+
         Parameters
         ----------
         text : str
             Text to summarize
         system_prompt_template : str, optional
             Custom system prompt template to use, by default None
-            
+
         Returns
         -------
         str
@@ -369,17 +415,17 @@ class Summarizer:
         """
         # Use default system prompt template if not specified
         template = system_prompt_template or self.SYSTEM_PROMPT_TEMPLATE
-        
+
         # get the opening of existing summaries to avoid repetition
-        existing_summaries = {group_id: summary[:150] 
+        existing_summaries = {group_id: summary[:150]
             for group_id, summary in self.summaries.items()
             if group_id != "0-title" and group_id != "1-title"}
-        existing_summaries_opening = "\n\n".join(existing_summaries.values())        
+        existing_summaries_opening = "\n\n".join(existing_summaries.values())
         logger.debug(f"Existing summaries openning: {existing_summaries_opening}")
-        
+
         # Create a prompt template from the system prompt template
         prompt_template = PromptTemplate.from_template(template)
-        
+
         try:
             # Format the prompt with abstract and text to summarize
             formatted_prompt = prompt_template.format(
@@ -387,47 +433,77 @@ class Summarizer:
                 text=text,
                 existing_summaries_opening=existing_summaries_opening
             )
-            
+
             # Log the prompt for debugging (optional)
             logger.debug(f"Sending prompt to model: {formatted_prompt[:100]}...")
-            
-            # Send the prompt to the model and get the response
-            response = self.llm.invoke(formatted_prompt)
-            
-            # Log if thinking is available in the response
-            if hasattr(response, 'additional_kwargs') and 'thinking' in response.additional_kwargs:
-                logger.debug(f"Model thinking: {response.additional_kwargs['thinking']}")
-                
-            # Extract the content from the response
-            return response.content if hasattr(response, 'content') else str(response)
-            
+
+            # Use retry logic for the API call
+            return self._invoke_with_retry(formatted_prompt)
+
         except Exception as e:
             logger.error(f"Error in summarization: {str(e)}")
             return f"Failed to generate summary: {str(e)}"
     
-    def summarize_all_sections(self) -> Dict[str, str]:
-        """Summarize all sections in the document.
-        
+    def summarize_all_sections(self, delay_between_requests: float = 0.5, progress_callback=None) -> Dict[str, str]:
+        """Summarize all sections in the document with rate limiting protection.
+
+        Parameters
+        ----------
+        delay_between_requests : float
+            Delay in seconds between API requests to avoid rate limits
+        progress_callback : callable, optional
+            Function to call with progress updates (progress_value, progress_text)
+
         Returns
         -------
         Dict[str, str]
             Dictionary mapping section group IDs to summaries
         """
         results = {}
-        
+
         # Create a list of groups from annotations
         groups = set()
         for annot in self.annotations_list:
             groups.add(annot["group"])
-        
-        for group_id in sorted(groups):
+
+        # Sort groups numerically by the number before the dash
+        def sort_key(group_id):
             try:
+                # Extract number before the dash (e.g., "2-intro" -> 2)
+                return int(group_id.split('-')[0])
+            except (ValueError, IndexError):
+                # If no number or invalid format, sort to end
+                return float('inf')
+
+        sorted_groups = sorted(groups, key=sort_key)
+        total_groups = len(sorted_groups)
+
+        for i, group_id in enumerate(sorted_groups):
+            try:
+                logger.info(f"Summarizing section {group_id} ({i+1}/{total_groups})")
+
+                # Update progress before processing
+                if progress_callback:
+                    progress_value = i / total_groups
+                    progress_callback(progress_value, f"Summarizing {group_id}... ({i+1}/{total_groups})")
+
                 summary = self.summarize_section(group_id, override_summary=True)
                 results[group_id] = summary
+
+                # Update progress after completing this section
+                if progress_callback:
+                    progress_value = (i + 1) / total_groups
+                    progress_callback(progress_value, f"{((i+1)/total_groups)*100:.0f}% Complete")
+
+                # Add delay between requests (except for the last one)
+                if i < total_groups - 1:
+                    logger.info(f"Waiting {delay_between_requests} seconds before next request...")
+                    time.sleep(delay_between_requests)
+
             except Exception as e:
                 logger.error(f"Failed to summarize section {group_id}: {str(e)}")
                 results[group_id] = f"Failed to generate summary: {str(e)}"
-        
+
         return results
 
     def extract_all_keywords(self):
@@ -468,7 +544,7 @@ class Summarizer:
 
     def percentage_summarized(self):
         """Calculate percentage of sections summarized"""
-        
+
         n_groups = len(set([annot["group"] for annot in self.annotations_list]))
         return len(self.summaries) / n_groups
         

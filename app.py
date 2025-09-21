@@ -10,7 +10,7 @@ from simple_papers.paper import Paper
 from simple_papers.annotation import Annotation
 from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
-from simple_papers.utils import text_to_audio_bytes, get_n_pages
+from simple_papers.utils import text_to_audio_bytes, get_n_pages, show_how_this_works_dialog
 from simple_papers.wiki import WikiUrlExtractor
 
 from dotenv import load_dotenv
@@ -55,6 +55,10 @@ def get_available_voices_for_section(group_id: str, audio_mapping: Dict[str, Lis
 st.set_page_config(layout="wide")
 st.sidebar.image("media/logo_small.png")
 # st.sidebar.title("Simple papers")
+
+# Add "How This Works" button
+if st.sidebar.button("ℹ️ How This Works", use_container_width=True):
+    show_how_this_works_dialog()
 
 # UI Configuration
 with st.sidebar.expander("Display Settings"):

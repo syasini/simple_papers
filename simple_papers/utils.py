@@ -415,3 +415,21 @@ def text_to_audio_file(text: str, file_path: str, voice_name: str = "Joe") -> st
     response, engine = get_audio_response(text, voice_name)
     return save_audio_to_file(response, file_path, engine)
 
+
+@st.dialog("How Simple Papers Works", width="medium")
+def show_how_this_works_dialog():
+    """
+    Display a modal dialog explaining how the Simple Papers application works.
+    
+    This function uses the display_how_this_works function to show content
+    in a Streamlit dialog modal with interactive components.
+    """
+    from .how_this_works import display_how_this_works
+    
+    # Display the content using the dedicated function
+    display_how_this_works()
+    
+    # Add a close button at the bottom
+    if st.button("Close", type="primary", use_container_width=True):
+        st.rerun()
+

@@ -38,10 +38,12 @@ Check out the app [here](https://simplepapers.streamlit.app/)!
 
 ## 🛠️ Technologies Used
 
-- [AWS Bedrock](https://aws.amazon.com/bedrock/) - AI foundation models 
+
+- [AWS Bedrock](https://aws.amazon.com/bedrock/) - AI foundation models
 - [LangChain](https://langchain.com/) - Framework for building AI applications
 - [agentic-doc](https://pypi.org/project/agentic-doc/) - Document parsing and extraction
 - [ElevenLabs](https://elevenlabs.io/) - AI voice synthesis for audio narration
+- [Streamlit](https://streamlit.io/) - Web application framework
 
 ## ⚙️ How It Works
 

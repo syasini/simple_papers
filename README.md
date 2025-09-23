@@ -1,6 +1,6 @@
 # Simple Papers
 
-![Simple Papers Logo](media/logo_small.png)
+![Simple Papers Logo](media/logo_github.png)
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Bedrock](https://img.shields.io/badge/AWS%20Bedrock-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/bedrock/)

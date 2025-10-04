@@ -10,6 +10,7 @@ from simple_papers.paper import Paper
 from simple_papers.annotation import Annotation
 from simple_papers.summarizer import Summarizer
 from simple_papers.audio_handler import AudioHandler
+from simple_papers.path_handler import PathHandler
 from simple_papers.utils import text_to_audio_bytes, get_n_pages, show_how_this_works_dialog
 from simple_papers.wiki import WikiUrlExtractor
 
@@ -20,6 +21,18 @@ load_dotenv()
 DEV_MODE = st.secrets["DEV_MODE"]
 DEV_LOCK = not DEV_MODE
 dev_lock_info = "This feature is only available in dev mode"
+
+def get_keywords_count(paper_path: str) -> int:
+    """Get total count of extracted keywords for a paper."""
+    path_handler = PathHandler(paper_path)
+    if path_handler.keywords_path.exists():
+        try:
+            with open(path_handler.keywords_path, "r") as f:
+                keywords = json.load(f)
+            return len(keywords)
+        except Exception:
+            return 0
+    return 0
 
 def get_available_voices_for_section(group_id: str, audio_mapping: Dict[str, List[str]]) -> Tuple[List[str], Dict[str, str]]:
     """
@@ -299,12 +312,16 @@ if st.session_state.is_parsed:
         st.session_state.summarizer.summarize_all_sections(progress_callback=update_progress)
         st.rerun()
 
-    if extract_keywords_button.button("Extract All Keywords", key="extract_all_keywords", 
+    if extract_keywords_button.button("Extract All Keywords", key="extract_all_keywords",
                                             disabled=DEV_LOCK,
                                             help=dev_lock_info):
         with st.spinner("Extracting keywords..."):
             st.session_state.summarizer.extract_all_keywords()
         st.rerun()
+
+    # Add caption with current keyword count
+    keywords_count = get_keywords_count(paper.path)
+    extract_keywords_button.caption(f"📊 Current keywords extracted: {keywords_count}")
 
     
     # Generate All Audio button - always show but disable when audio is off
@@ -341,7 +358,7 @@ def show_annotation(annotation):
     summary_highlighted = st.session_state.summarizer.highlight_summary_keywords(summary)
     col_r.write("## is actually pretty simple! 💁")
 
-    with col_r.container(height=container_height,):
+    with col_r.container(height=container_height, gap="medium"):
         summary_tab, markdown_tab, raw_json_tab = st.tabs(["Simplified", "Original", "Raw JSON"])
 
         
@@ -426,7 +443,7 @@ def show_annotation(annotation):
                 st.rerun()
         
 
-with col_l.container(height=container_height):
+with col_l.container(height=container_height, gap="medium"):
     pdf_viewer(
         binary_pdf,
         width=container_width,

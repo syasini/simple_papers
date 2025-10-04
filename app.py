@@ -63,8 +63,9 @@ if st.sidebar.button("ℹ️ How This Works", use_container_width=True):
 # UI Configuration
 with st.sidebar.expander("Display Settings"):
 
-    container_height = st.number_input("Container Height", min_value=100, max_value=2000, value=950, step=50)
-    zoom_level = st.number_input("Zoom Level", min_value=.7, max_value=2.0, value=1.1, step=0.1)
+    container_height = st.number_input("Container Height", min_value=100, max_value=2000, value=1000, step=50)
+    container_width = f"{st.number_input('Width Fill (%)', min_value=10, max_value=120, value=100, step=10)}%"
+    # zoom_level = st.number_input("Zoom Level", min_value=.5, max_value=2.0, value=1.1, step=0.1)
     show_page_separator = st.checkbox("Show Page Separator", value=True)
 
 # Initialize session state variables
@@ -428,12 +429,13 @@ def show_annotation(annotation):
 with col_l.container(height=container_height):
     pdf_viewer(
         binary_pdf,
-        width=700,
-        height=1000,
+        width=container_width,
+        height=container_height,
         # Only use annotations if document is parsed
         annotations=st.session_state.annotations_list if st.session_state.is_parsed else [], 
         annotation_outline_size=2.5,
-        zoom_level=zoom_level,
+        zoom_level="auto",
+        viewer_align="left",
         show_page_separator=show_page_separator,
         on_annotation_click=show_annotation,
     )

@@ -358,7 +358,7 @@ def show_annotation(annotation):
     summary_highlighted = st.session_state.summarizer.highlight_summary_keywords(summary)
     col_r.write("## is actually pretty simple! 💁")
 
-    with col_r.container(height=container_height, gap="medium"):
+    with col_r.container(height=container_height):
         summary_tab, markdown_tab, raw_json_tab = st.tabs(["Simplified", "Original", "Raw JSON"])
 
         
@@ -443,7 +443,7 @@ def show_annotation(annotation):
                 st.rerun()
         
 
-with col_l.container(height=container_height, gap="medium"):
+with col_l.container(height=container_height):
     pdf_viewer(
         binary_pdf,
         width=container_width,

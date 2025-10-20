@@ -1,5 +1,68 @@
 {
     "0-title": [
         "papers/2005.11401v4/audio/2005.11401v4_0-title_Football.mp3"
+    ],
+    "1-abstract": [
+        "papers/2005.11401v4/audio/2005.11401v4_1-abstract_Pat.mp3"
+    ],
+    "2-introduction": [
+        "papers/2005.11401v4/audio/2005.11401v4_2-introduction_Pat.mp3"
+    ],
+    "3-methods": [
+        "papers/2005.11401v4/audio/2005.11401v4_3-methods_Pat.mp3"
+    ],
+    "4-models": [
+        "papers/2005.11401v4/audio/2005.11401v4_4-models_Pat.mp3"
+    ],
+    "5-retriever": [
+        "papers/2005.11401v4/audio/2005.11401v4_5-retriever_Pat.mp3"
+    ],
+    "6-generator": [
+        "papers/2005.11401v4/audio/2005.11401v4_6-generator_Pat.mp3"
+    ],
+    "7-training": [
+        "papers/2005.11401v4/audio/2005.11401v4_7-training_Pat.mp3"
+    ],
+    "8-experiments": [
+        "papers/2005.11401v4/audio/2005.11401v4_8-experiments_Pat.mp3"
+    ],
+    "9-open": [
+        "papers/2005.11401v4/audio/2005.11401v4_9-open_Pat.mp3"
+    ],
+    "10-abstractive": [
+        "papers/2005.11401v4/audio/2005.11401v4_10-abstractive_Pat.mp3"
+    ],
+    "11-jeopardy": [
+        "papers/2005.11401v4/audio/2005.11401v4_11-jeopardy_Pat.mp3"
+    ],
+    "12-fact": [
+        "papers/2005.11401v4/audio/2005.11401v4_12-fact_Pat.mp3"
+    ],
+    "13-results": [
+        "papers/2005.11401v4/audio/2005.11401v4_13-results_Pat.mp3"
+    ],
+    "14-abstractive": [
+        "papers/2005.11401v4/audio/2005.11401v4_14-abstractive_Pat.mp3"
+    ],
+    "15-jeopardy": [
+        "papers/2005.11401v4/audio/2005.11401v4_15-jeopardy_Pat.mp3"
+    ],
+    "16-fact": [
+        "papers/2005.11401v4/audio/2005.11401v4_16-fact_Pat.mp3"
+    ],
+    "17-additional": [
+        "papers/2005.11401v4/audio/2005.11401v4_17-additional_Pat.mp3"
+    ],
+    "18-index": [
+        "papers/2005.11401v4/audio/2005.11401v4_18-index_Pat.mp3"
+    ],
+    "19-related": [
+        "papers/2005.11401v4/audio/2005.11401v4_19-related_Pat.mp3"
+    ],
+    "20-discussion": [
+        "papers/2005.11401v4/audio/2005.11401v4_20-discussion_Pat.mp3"
+    ],
+    "21-reference": [
+        "papers/2005.11401v4/audio/2005.11401v4_21-reference_Pat.mp3"
     ]
 }

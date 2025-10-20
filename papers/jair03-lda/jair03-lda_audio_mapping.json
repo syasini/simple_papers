@@ -1,90 +1,117 @@
 {
     "2-introduction": [
-        "papers/jair03-lda/audio/jair03-lda_2-introduction_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_2-introduction_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_2-introduction_Pat.mp3"
     ],
     "3-notation": [
         "papers/jair03-lda/audio/jair03-lda_3-notation_Alloy.mp3",
-        "papers/jair03-lda/audio/jair03-lda_3-notation_Joe.mp3"
-    ],
-    "4-latent": [
-        "papers/jair03-lda/audio/jair03-lda_4-latent_Alloy.mp3",
-        "papers/jair03-lda/audio/jair03-lda_4-latent_Joe.mp3"
-    ],
-    "5-we": [
-        "papers/jair03-lda/audio/jair03-lda_5-we_Alloy.mp3",
-        "papers/jair03-lda/audio/jair03-lda_5-we_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_3-notation_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_3-notation_Pat.mp3"
     ],
     "6-lda": [
-        "papers/jair03-lda/audio/jair03-lda_6-lda_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_6-lda_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_6-lda_Pat.mp3"
     ],
     "13-inference": [
-        "papers/jair03-lda/audio/jair03-lda_13-inference_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_13-inference_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_13-inference_Pat.mp3"
     ],
     "1-abstract": [
-        "papers/jair03-lda/audio/jair03-lda_1-abstract_Felicity.mp3",
-        "papers/jair03-lda/audio/jair03-lda_1-abstract_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_1-abstract_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_1-abstract_Pat.mp3",
+        "papers/jair03-lda/audio/jair03-lda_1-abstract_Hope.mp3",
+        "papers/jair03-lda/audio/jair03-lda_1-abstract_Amelia.mp3",
+        "papers/jair03-lda/audio/jair03-lda_1-abstract_Felicity.mp3"
     ],
     "0-title": [
         "papers/jair03-lda/audio/jair03-lda_0-title_Football.mp3"
     ],
     "26-reference": [
-        "papers/jair03-lda/audio/jair03-lda_26-reference_Joe.mp3"
-    ],
-    "7-a": [
-        "papers/jair03-lda/audio/jair03-lda_7-a_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_26-reference_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_26-reference_Pat.mp3"
     ],
     "14-variational": [
-        "papers/jair03-lda/audio/jair03-lda_14-variational_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_14-variational_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_14-variational_Pat.mp3"
     ],
     "11-probabilistic": [
-        "papers/jair03-lda/audio/jair03-lda_11-probabilistic_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_11-probabilistic_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_11-probabilistic_Pat.mp3"
     ],
     "10-mixture": [
-        "papers/jair03-lda/audio/jair03-lda_10-mixture_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_10-mixture_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_10-mixture_Pat.mp3"
     ],
     "12-a": [
-        "papers/jair03-lda/audio/jair03-lda_12-a_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_12-a_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_12-a_Pat.mp3"
     ],
     "15-initialize": [
-        "papers/jair03-lda/audio/jair03-lda_15-initialize_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_15-initialize_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_15-initialize_Pat.mp3"
     ],
     "16-parameter": [
-        "papers/jair03-lda/audio/jair03-lda_16-parameter_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_16-parameter_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_16-parameter_Pat.mp3"
     ],
     "17-smoothing": [
-        "papers/jair03-lda/audio/jair03-lda_17-smoothing_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_17-smoothing_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_17-smoothing_Pat.mp3"
     ],
     "18-an": [
-        "papers/jair03-lda/audio/jair03-lda_18-an_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_18-an_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_18-an_Pat.mp3"
     ],
     "19-example": [
-        "papers/jair03-lda/audio/jair03-lda_19-example_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_19-example_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_19-example_Pat.mp3"
     ],
     "20-applications": [
-        "papers/jair03-lda/audio/jair03-lda_20-applications_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_20-applications_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_20-applications_Pat.mp3"
     ],
     "21-document": [
-        "papers/jair03-lda/audio/jair03-lda_21-document_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_21-document_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_21-document_Pat.mp3"
     ],
     "22-note": [
-        "papers/jair03-lda/audio/jair03-lda_22-note_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_22-note_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_22-note_Pat.mp3"
     ],
     "23-document": [
-        "papers/jair03-lda/audio/jair03-lda_23-document_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_23-document_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_23-document_Pat.mp3"
     ],
     "24-collaborative": [
-        "papers/jair03-lda/audio/jair03-lda_24-collaborative_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_24-collaborative_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_24-collaborative_Pat.mp3"
     ],
     "25-discussion": [
-        "papers/jair03-lda/audio/jair03-lda_25-discussion_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_25-discussion_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_25-discussion_Pat.mp3"
     ],
     "27-dickey": [
-        "papers/jair03-lda/audio/jair03-lda_27-dickey_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_27-dickey_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_27-dickey_Pat.mp3"
     ],
     "8-relationship": [
-        "papers/jair03-lda/audio/jair03-lda_8-relationship_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_8-relationship_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_8-relationship_Pat.mp3"
     ],
     "9-unigram": [
-        "papers/jair03-lda/audio/jair03-lda_9-unigram_Joe.mp3"
+        "papers/jair03-lda/audio/jair03-lda_9-unigram_Joe.mp3",
+        "papers/jair03-lda/audio/jair03-lda_9-unigram_Pat.mp3"
+    ],
+    "4-latent": [
+        "papers/jair03-lda/audio/jair03-lda_4-latent_Pat.mp3",
+        "papers/jair03-lda/audio/jair03-lda_4-latent_Joe.mp3"
+    ],
+    "5-we": [
+        "papers/jair03-lda/audio/jair03-lda_5-we_Pat.mp3",
+        "papers/jair03-lda/audio/jair03-lda_5-we_Joe.mp3"
+    ],
+    "7-a": [
+        "papers/jair03-lda/audio/jair03-lda_7-a_Pat.mp3",
+        "papers/jair03-lda/audio/jair03-lda_7-a_Joe.mp3"
     ]
 }

@@ -14,6 +14,8 @@ VOICE_MAPPING = {
     "Felicity": ("elevenlabs", "aTbnroHRGIomiKpqAQR8"),
     "Amelia": ("elevenlabs", "ZF6FPAbjXT4488VcRRnw"),
     "Hope": ("elevenlabs", "uYXf8XasLslADfZ2MB4u"),
+    "Pat": ("elevenlabs", "kzwbkY5EoyqzZKmPYLBN"),
+    "Mike": ("elevenlabs", "vDchjyOZZytffNeZXfZK"),
 
     "Alloy": ("openai", "alloy"),  # OpenAI voice
     "Echo": ("openai", "echo"),  # OpenAI voice

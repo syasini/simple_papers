@@ -1,19 +1,52 @@
 {
-    "1-abstract": [
-        "papers/2112.10752v2/audio/2112.10752v2_1-abstract_Joe.mp3",
-        "papers/2112.10752v2/audio/2112.10752v2_1-abstract_Amelia.mp3"
-    ],
     "0-title": [
         "papers/2112.10752v2/audio/2112.10752v2_0-title_Football.mp3"
     ],
     "2-introduction": [
         "papers/2112.10752v2/audio/2112.10752v2_2-introduction_Joe.mp3",
-        "papers/2112.10752v2/audio/2112.10752v2_2-introduction_Amelia.mp3"
+        "papers/2112.10752v2/audio/2112.10752v2_2-introduction_Amelia.mp3",
+        "papers/2112.10752v2/audio/2112.10752v2_2-introduction_Hope.mp3"
     ],
     "3-related": [
-        "papers/2112.10752v2/audio/2112.10752v2_3-related_Amelia.mp3"
+        "papers/2112.10752v2/audio/2112.10752v2_3-related_Amelia.mp3",
+        "papers/2112.10752v2/audio/2112.10752v2_3-related_Hope.mp3"
     ],
     "4-method": [
-        "papers/2112.10752v2/audio/2112.10752v2_4-method_Amelia.mp3"
+        "papers/2112.10752v2/audio/2112.10752v2_4-method_Amelia.mp3",
+        "papers/2112.10752v2/audio/2112.10752v2_4-method_Hope.mp3"
+    ],
+    "5-perceptual": [
+        "papers/2112.10752v2/audio/2112.10752v2_5-perceptual_Hope.mp3"
+    ],
+    "6-latent": [
+        "papers/2112.10752v2/audio/2112.10752v2_6-latent_Hope.mp3"
+    ],
+    "7-conditioning": [
+        "papers/2112.10752v2/audio/2112.10752v2_7-conditioning_Hope.mp3"
+    ],
+    "8-experiments": [
+        "papers/2112.10752v2/audio/2112.10752v2_8-experiments_Hope.mp3"
+    ],
+    "9-on": [
+        "papers/2112.10752v2/audio/2112.10752v2_9-on_Hope.mp3"
+    ],
+    "10-image": [
+        "papers/2112.10752v2/audio/2112.10752v2_10-image_Hope.mp3"
+    ],
+    "11-conditional": [
+        "papers/2112.10752v2/audio/2112.10752v2_11-conditional_Hope.mp3"
+    ],
+    "12-super": [
+        "papers/2112.10752v2/audio/2112.10752v2_12-super_Hope.mp3"
+    ],
+    "14-limitations": [
+        "papers/2112.10752v2/audio/2112.10752v2_14-limitations_Hope.mp3"
+    ],
+    "15-conclusion": [
+        "papers/2112.10752v2/audio/2112.10752v2_15-conclusion_Hope.mp3"
+    ],
+    "1-abstract": [
+        "papers/2112.10752v2/audio/2112.10752v2_1-abstract_Hope.mp3",
+        "papers/2112.10752v2/audio/2112.10752v2_1-abstract_Joe.mp3"
     ]
 }

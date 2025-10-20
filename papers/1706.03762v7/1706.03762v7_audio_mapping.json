@@ -2,65 +2,100 @@
     "0-title": [
         "papers/1706.03762v7/audio/1706.03762v7_0-title_Football.mp3"
     ],
-    "1-abstract": [
-        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Amelia.mp3",
-        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Felicity.mp3",
-        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Joe.mp3",
-        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Hope.mp3"
-    ],
-    "2-introduction": [
-        "papers/1706.03762v7/audio/1706.03762v7_2-introduction_Joe.mp3"
-    ],
-    "13-hardware": [
-        "papers/1706.03762v7/audio/1706.03762v7_13-hardware_Joe.mp3"
-    ],
-    "9-positional": [
-        "papers/1706.03762v7/audio/1706.03762v7_9-positional_Joe.mp3"
-    ],
     "15-regularization": [
-        "papers/1706.03762v7/audio/1706.03762v7_15-regularization_Joe.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_15-regularization_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_15-regularization_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_15-regularization_Pat.mp3"
     ],
     "4-model": [
-        "papers/1706.03762v7/audio/1706.03762v7_4-model_Joe.mp3"
-    ],
-    "10-why": [
-        "papers/1706.03762v7/audio/1706.03762v7_10-why_Joe.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_4-model_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_4-model_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_4-model_Pat.mp3"
     ],
     "11-training": [
-        "papers/1706.03762v7/audio/1706.03762v7_11-training_Joe.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_11-training_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_11-training_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_11-training_Pat.mp3"
     ],
     "12-training": [
-        "papers/1706.03762v7/audio/1706.03762v7_12-training_Joe.mp3"
-    ],
-    "14-optimizer": [
-        "papers/1706.03762v7/audio/1706.03762v7_14-optimizer_Joe.mp3"
-    ],
-    "16-results": [
-        "papers/1706.03762v7/audio/1706.03762v7_16-results_Joe.mp3"
-    ],
-    "17-model": [
-        "papers/1706.03762v7/audio/1706.03762v7_17-model_Joe.mp3"
-    ],
-    "18-english": [
-        "papers/1706.03762v7/audio/1706.03762v7_18-english_Joe.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_12-training_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_12-training_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_12-training_Pat.mp3"
     ],
     "19-conclusion": [
-        "papers/1706.03762v7/audio/1706.03762v7_19-conclusion_Joe.mp3"
-    ],
-    "3-background": [
-        "papers/1706.03762v7/audio/1706.03762v7_3-background_Joe.mp3"
-    ],
-    "6-attention": [
-        "papers/1706.03762v7/audio/1706.03762v7_6-attention_Joe.mp3"
-    ],
-    "7-position": [
-        "papers/1706.03762v7/audio/1706.03762v7_7-position_Joe.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_19-conclusion_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_19-conclusion_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_19-conclusion_Pat.mp3"
     ],
     "8-embeddings": [
-        "papers/1706.03762v7/audio/1706.03762v7_8-embeddings_Joe.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_8-embeddings_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_8-embeddings_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_8-embeddings_Pat.mp3"
     ],
     "5-encoder": [
         "papers/1706.03762v7/audio/1706.03762v7_5-encoder_Joe.mp3",
-        "papers/1706.03762v7/audio/1706.03762v7_5-encoder_Hope.mp3"
+        "papers/1706.03762v7/audio/1706.03762v7_5-encoder_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_5-encoder_Pat.mp3"
+    ],
+    "1-abstract": [
+        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Pat.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_1-abstract_Mike.mp3"
+    ],
+    "2-introduction": [
+        "papers/1706.03762v7/audio/1706.03762v7_2-introduction_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_2-introduction_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_2-introduction_Pat.mp3"
+    ],
+    "3-background": [
+        "papers/1706.03762v7/audio/1706.03762v7_3-background_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_3-background_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_3-background_Pat.mp3"
+    ],
+    "6-attention": [
+        "papers/1706.03762v7/audio/1706.03762v7_6-attention_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_6-attention_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_6-attention_Pat.mp3"
+    ],
+    "7-position": [
+        "papers/1706.03762v7/audio/1706.03762v7_7-position_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_7-position_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_7-position_Pat.mp3"
+    ],
+    "9-positional": [
+        "papers/1706.03762v7/audio/1706.03762v7_9-positional_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_9-positional_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_9-positional_Pat.mp3"
+    ],
+    "10-why": [
+        "papers/1706.03762v7/audio/1706.03762v7_10-why_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_10-why_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_10-why_Pat.mp3"
+    ],
+    "13-hardware": [
+        "papers/1706.03762v7/audio/1706.03762v7_13-hardware_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_13-hardware_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_13-hardware_Pat.mp3"
+    ],
+    "14-optimizer": [
+        "papers/1706.03762v7/audio/1706.03762v7_14-optimizer_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_14-optimizer_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_14-optimizer_Pat.mp3"
+    ],
+    "16-results": [
+        "papers/1706.03762v7/audio/1706.03762v7_16-results_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_16-results_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_16-results_Pat.mp3"
+    ],
+    "17-model": [
+        "papers/1706.03762v7/audio/1706.03762v7_17-model_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_17-model_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_17-model_Pat.mp3"
+    ],
+    "18-english": [
+        "papers/1706.03762v7/audio/1706.03762v7_18-english_Joe.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_18-english_Hope.mp3",
+        "papers/1706.03762v7/audio/1706.03762v7_18-english_Pat.mp3"
     ]
 }

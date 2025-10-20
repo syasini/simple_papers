@@ -3,45 +3,59 @@
         "papers/1908.10084v1/audio/1908.10084v1_0-title_Football.mp3"
     ],
     "1-abstract": [
-        "papers/1908.10084v1/audio/1908.10084v1_1-abstract_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_1-abstract_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_1-abstract_Pat.mp3"
     ],
     "10-wikipedia": [
-        "papers/1908.10084v1/audio/1908.10084v1_10-wikipedia_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_10-wikipedia_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_10-wikipedia_Pat.mp3"
     ],
     "11-evaluation": [
-        "papers/1908.10084v1/audio/1908.10084v1_11-evaluation_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_11-evaluation_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_11-evaluation_Pat.mp3"
     ],
     "12-ablation": [
-        "papers/1908.10084v1/audio/1908.10084v1_12-ablation_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_12-ablation_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_12-ablation_Pat.mp3"
     ],
     "13-computational": [
-        "papers/1908.10084v1/audio/1908.10084v1_13-computational_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_13-computational_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_13-computational_Pat.mp3"
     ],
     "14-conclusion": [
-        "papers/1908.10084v1/audio/1908.10084v1_14-conclusion_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_14-conclusion_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_14-conclusion_Pat.mp3"
     ],
     "2-introduction": [
-        "papers/1908.10084v1/audio/1908.10084v1_2-introduction_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_2-introduction_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_2-introduction_Pat.mp3"
     ],
     "3-related": [
-        "papers/1908.10084v1/audio/1908.10084v1_3-related_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_3-related_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_3-related_Pat.mp3"
     ],
     "4-model": [
-        "papers/1908.10084v1/audio/1908.10084v1_4-model_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_4-model_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_4-model_Pat.mp3"
     ],
     "5-training": [
-        "papers/1908.10084v1/audio/1908.10084v1_5-training_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_5-training_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_5-training_Pat.mp3"
     ],
     "6-evaluation": [
-        "papers/1908.10084v1/audio/1908.10084v1_6-evaluation_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_6-evaluation_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_6-evaluation_Pat.mp3"
     ],
     "7-unsupervised": [
-        "papers/1908.10084v1/audio/1908.10084v1_7-unsupervised_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_7-unsupervised_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_7-unsupervised_Pat.mp3"
     ],
     "8-supervised": [
-        "papers/1908.10084v1/audio/1908.10084v1_8-supervised_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_8-supervised_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_8-supervised_Pat.mp3"
     ],
     "9-argument": [
-        "papers/1908.10084v1/audio/1908.10084v1_9-argument_Hope.mp3"
+        "papers/1908.10084v1/audio/1908.10084v1_9-argument_Hope.mp3",
+        "papers/1908.10084v1/audio/1908.10084v1_9-argument_Pat.mp3"
     ]
 }

@@ -16,13 +16,14 @@ from simple_papers.wiki import WikiUrlExtractor
 class Summarizer:
     """Class to handle summarization of document sections.
     
-    Uses AWS Bedrock's Claude 3.7 Sonnet model through LangChain to generate
+    Uses AWS Bedrock's Claude 4.5 Sonnet model through LangChain to generate
     summaries of document sections based on their text content.
     """
     
-    # Claude 3.7 Sonnet model ID for AWS Bedrock
+    # Claude 4.5 Sonnet model ID for AWS Bedrock
+    # MODEL_ID = "us.anthropic.claude-sonnet-4-5-20250929-v1:0"
     MODEL_ID = "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
-    
+
     # Default AWS region
     AWS_REGION = "us-east-1"
     
@@ -84,15 +85,50 @@ class Summarizer:
         </usage_guidance>
 
         <format>
+        **CRITICAL: Only generate summaries for main sections (whole numbers) and first-level subsections. Never create separate summaries for deeper subsections.**
+
         For each summary:
         1. **For main sections (whole numbers like "2. Background")**: Start with a short, playful opener that highlights the main idea of the section
-        2. **For subsections (like "3.1", "4.2.1")**: Skip the opener and go straight to bullet points
-        3. **Follow with 2 to 3 bullet points** that:
+        2. **For first-level subsections (like "3.1", "4.2")**: Skip the opener and go straight to bullet points
+        3. **For deeper subsections (like "3.2.1", "4.2.3")**: DO NOT generate separate summaries at all. Their content should be incorporated into the parent section's summary as single bullet points, each starting with the subsection number in parentheses followed directly by the content.
+        4. **Follow with 2 to 3 bullet points** that:
         - Break down the core ideas in plain language
         - Use analogies or examples if helpful
-        4. If summarizing a main section (whole number), include a brief "so what?" explanation if it helps clarify why something matters
+        - For main sections, include content from any nested subsections within the bullet points
+        5. If summarizing a main section (whole number), include a brief "so what?" explanation if it helps clarify why something matters
         - for subsections skip the "so what" explanation
-        5. **Close with a short connector sentence** (optional), like "So basically…" to wrap it up
+        6. **Close with a short connector sentence** (optional), like "So basically…" to wrap it up
+
+        <example_structure>
+        **CORRECT Example for section 3.2 that has subsections 3.2.1 and 3.2.2:**
+
+        # 3.2 Attention
+
+        *Time to dive into the brain of the Transformer — the attention mechanism!*
+
+        • Attention is basically a fancy matching game between queries and keys-value pairs. It calculates how much each value matters by comparing queries with keys, then creates a weighted sum of values.
+
+        • The Transformer uses "Scaled Dot-Product Attention" which multiplies queries and keys together, scales them down (to avoid math explosions), and uses softmax to create weights. This approach is faster than alternatives because it can use optimized matrix multiplication.
+
+        • They don't stop at one attention mechanism though! The Transformer uses "Multi-Head Attention" with 8 parallel attention layers that let the model focus on different aspects of information simultaneously - like having multiple brains working on the same problem from different angles.
+
+        • (3.2.1) This attention flavor takes queries (Q), keys (K), and values (V) as inputs, then computes dot products between queries and keys to determine how much attention to pay to each value.
+
+        • (3.2.2) Instead of one big attention mechanism, they split attention into multiple "heads" that work in parallel - imagine having 8 different spotlights that can each focus on different aspects of the input.
+
+        This attention mechanism is what makes the Transformer so powerful - it's how the model decides what parts of a sentence to focus on when translating or processing language.
+
+        **WRONG - Do NOT create separate summaries like this:**
+
+        ## 3.2.1 Scaled Dot-Product Attention
+        *This section explains...*
+        • [bullet points here]
+
+        ## 3.2.2 Multi-Head Attention
+        *This section covers...*
+        • [bullet points here]
+        </example_structure>
+        </format>
 
         <markdown_formatting>
         - Always apply correct markdown formatting to section titles, even if the original input is missing it.
@@ -122,7 +158,9 @@ class Summarizer:
         <instructions>
         - Use the abstract to stay grounded in the paper's main goals
         - Do NOT copy original text — always paraphrase in your own voice
-        - Be concise — no more than 3 bullet points
+        - IMPORTANT: Only generate summaries for main sections (whole numbers) and first-level subsections (like 3.1, 4.2). Never create separate summaries for deeper subsections (like 3.2.1, 3.2.2).
+        - Be concise — use ONLY up to a maximum of 3 bullet points for main sections and first-level subsections, UNLESS the section contains deeper subsections (like 3.2.1, 3.2.2), in which case add 1 additional bullet point for each deeper subsection (e.g., if section 3.2 has subsections 3.2.1 and 3.2.2, then 3.2's summary gets 3 + 2 = 5 bullet points total, but if section 4 has no subsections, it gets exactly 3 bullet points)
+        - Format deeper subsection content as labeled bullet points starting with the section number in parentheses: "- (3.2.1) This mechanism computes attention by...", "- (3.2.2) Multiple attention heads work in parallel..."
         - Focus on clarity and lightness — aim to teach and delight, not overwhelm
         - Avoid too much repetition in phrasing or jokes
         - Use the existing opening of summaries from other sections to avoid repetition

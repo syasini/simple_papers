@@ -52,5 +52,8 @@
     ],
     "9-simple": [
         "papers/1705.07874v2/audio/1705.07874v2_9-simple_Hope.mp3"
+    ],
+    "6-deeplift": [
+        "papers/1705.07874v2/audio/1705.07874v2_6-deeplift_Hope.mp3"
     ]
 }

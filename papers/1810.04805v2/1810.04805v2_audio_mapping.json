@@ -1,12 +1,65 @@
 {
     "1-abstract": [
         "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Joe.mp3",
-        "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Hope.mp3"
+        "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Hope.mp3",
+        "papers/1810.04805v2/audio/1810.04805v2_1-abstract_Pat.mp3"
     ],
     "0-title": [
         "papers/1810.04805v2/audio/1810.04805v2_0-title_Football.mp3"
     ],
     "4-unsupervised": [
-        "papers/1810.04805v2/audio/1810.04805v2_4-unsupervised_Hope.mp3"
+        "papers/1810.04805v2/audio/1810.04805v2_4-unsupervised_Hope.mp3",
+        "papers/1810.04805v2/audio/1810.04805v2_4-unsupervised_Pat.mp3"
+    ],
+    "2-introduction": [
+        "papers/1810.04805v2/audio/1810.04805v2_2-introduction_Pat.mp3"
+    ],
+    "3-related": [
+        "papers/1810.04805v2/audio/1810.04805v2_3-related_Pat.mp3"
+    ],
+    "7-bert": [
+        "papers/1810.04805v2/audio/1810.04805v2_7-bert_Pat.mp3"
+    ],
+    "5-unsupervised": [
+        "papers/1810.04805v2/audio/1810.04805v2_5-unsupervised_Pat.mp3"
+    ],
+    "6-transfer": [
+        "papers/1810.04805v2/audio/1810.04805v2_6-transfer_Pat.mp3"
+    ],
+    "8-pre": [
+        "papers/1810.04805v2/audio/1810.04805v2_8-pre_Pat.mp3"
+    ],
+    "9-fine": [
+        "papers/1810.04805v2/audio/1810.04805v2_9-fine_Pat.mp3"
+    ],
+    "10-experiments": [
+        "papers/1810.04805v2/audio/1810.04805v2_10-experiments_Pat.mp3"
+    ],
+    "11-glue": [
+        "papers/1810.04805v2/audio/1810.04805v2_11-glue_Pat.mp3"
+    ],
+    "12-squad": [
+        "papers/1810.04805v2/audio/1810.04805v2_12-squad_Pat.mp3"
+    ],
+    "13-squad": [
+        "papers/1810.04805v2/audio/1810.04805v2_13-squad_Pat.mp3"
+    ],
+    "14-swag": [
+        "papers/1810.04805v2/audio/1810.04805v2_14-swag_Pat.mp3"
+    ],
+    "16-effect": [
+        "papers/1810.04805v2/audio/1810.04805v2_16-effect_Pat.mp3"
+    ],
+    "17-effect": [
+        "papers/1810.04805v2/audio/1810.04805v2_17-effect_Pat.mp3"
+    ],
+    "18-feature": [
+        "papers/1810.04805v2/audio/1810.04805v2_18-feature_Pat.mp3"
+    ],
+    "19-conclusion": [
+        "papers/1810.04805v2/audio/1810.04805v2_19-conclusion_Pat.mp3"
+    ],
+    "15-ablation": [
+        "papers/1810.04805v2/audio/1810.04805v2_15-ablation_Pat.mp3"
     ]
 }

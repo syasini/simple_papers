@@ -3,6 +3,73 @@
         "papers/2506.13023v2/audio/2506.13023v2_0-title_Football.mp3"
     ],
     "1-abstract": [
-        "papers/2506.13023v2/audio/2506.13023v2_1-abstract_Hope.mp3"
+        "papers/2506.13023v2/audio/2506.13023v2_1-abstract_Hope.mp3",
+        "papers/2506.13023v2/audio/2506.13023v2_1-abstract_Pat.mp3"
+    ],
+    "2-introduction": [
+        "papers/2506.13023v2/audio/2506.13023v2_2-introduction_Pat.mp3"
+    ],
+    "10-wrap": [
+        "papers/2506.13023v2/audio/2506.13023v2_10-wrap_Pat.mp3"
+    ],
+    "11-metrics": [
+        "papers/2506.13023v2/audio/2506.13023v2_11-metrics_Pat.mp3"
+    ],
+    "12-term": [
+        "papers/2506.13023v2/audio/2506.13023v2_12-term_Pat.mp3"
+    ],
+    "13-semantic": [
+        "papers/2506.13023v2/audio/2506.13023v2_13-semantic_Pat.mp3"
+    ],
+    "14-nli": [
+        "papers/2506.13023v2/audio/2506.13023v2_14-nli_Pat.mp3"
+    ],
+    "15-llm": [
+        "papers/2506.13023v2/audio/2506.13023v2_15-llm_Pat.mp3"
+    ],
+    "16-perplexity": [
+        "papers/2506.13023v2/audio/2506.13023v2_16-perplexity_Pat.mp3"
+    ],
+    "17-wrap": [
+        "papers/2506.13023v2/audio/2506.13023v2_17-wrap_Pat.mp3"
+    ],
+    "18-robust": [
+        "papers/2506.13023v2/audio/2506.13023v2_18-robust_Pat.mp3"
+    ],
+    "19-handling": [
+        "papers/2506.13023v2/audio/2506.13023v2_19-handling_Pat.mp3"
+    ],
+    "20-comprehensive": [
+        "papers/2506.13023v2/audio/2506.13023v2_20-comprehensive_Pat.mp3"
+    ],
+    "21-hallucination": [
+        "papers/2506.13023v2/audio/2506.13023v2_21-hallucination_Pat.mp3"
+    ],
+    "22-wrap": [
+        "papers/2506.13023v2/audio/2506.13023v2_22-wrap_Pat.mp3"
+    ],
+    "23-putting": [
+        "papers/2506.13023v2/audio/2506.13023v2_23-putting_Pat.mp3"
+    ],
+    "3-datasets": [
+        "papers/2506.13023v2/audio/2506.13023v2_3-datasets_Pat.mp3"
+    ],
+    "4-evaluation": [
+        "papers/2506.13023v2/audio/2506.13023v2_4-evaluation_Pat.mp3"
+    ],
+    "5-amassing": [
+        "papers/2506.13023v2/audio/2506.13023v2_5-amassing_Pat.mp3"
+    ],
+    "6-adhering": [
+        "papers/2506.13023v2/audio/2506.13023v2_6-adhering_Pat.mp3"
+    ],
+    "7-demonstrative": [
+        "papers/2506.13023v2/audio/2506.13023v2_7-demonstrative_Pat.mp3"
+    ],
+    "8-dynamic": [
+        "papers/2506.13023v2/audio/2506.13023v2_8-dynamic_Pat.mp3"
+    ],
+    "9-required": [
+        "papers/2506.13023v2/audio/2506.13023v2_9-required_Pat.mp3"
     ]
 }

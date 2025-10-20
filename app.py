@@ -211,12 +211,13 @@ st.sidebar.header("Paper Actions")
 summary_progess = st.sidebar.empty()
 summarize_paper_button = st.sidebar.empty()
 extract_keywords_button = st.sidebar.empty()
+total_keywords_caption = st.sidebar.empty()
 
 st.sidebar.divider()
 st.sidebar.header("Audio Settings")
 auto_play_audio = st.sidebar.toggle("Auto Play Audio", value=not DEV_MODE)
-default_audio_voice = st.sidebar.selectbox("Default Audio Voice", 
-                        options=["Joe", "Felicity", "Amelia", "Hope", "Alloy"], 
+default_audio_voice = st.sidebar.selectbox("Default Audio Voice Engine", 
+                        options=["Pat", "Joe", "Hope", "Felicity", "Amelia",  "Mike",  "Alloy"], 
                         )
 
 if st.session_state.summary_audio:
@@ -321,7 +322,7 @@ if st.session_state.is_parsed:
 
     # Add caption with current keyword count
     keywords_count = get_keywords_count(paper.path)
-    extract_keywords_button.caption(f"📊 Current keywords extracted: {keywords_count}")
+    total_keywords_caption.caption(f"📊 Current keywords extracted: {keywords_count}")
 
     
     # Generate All Audio button - always show but disable when audio is off
@@ -409,7 +410,7 @@ def show_annotation(annotation):
                 voice_options, voice_paths = get_available_voices_for_section(group_id, audio_mapping)
                 
                 # Show dropdown to select voice if multiple options available
-                if len(voice_options) > 1:
+                if not "Football" in voice_options:
                     # if the default voice is available, select it
                     selected_audio_voice = default_audio_voice if default_audio_voice in voice_options else voice_options[0]
                     

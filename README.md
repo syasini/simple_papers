@@ -14,6 +14,8 @@ Simple Papers transforms complex academic papers into digestible, simplified con
 
 Check out the app [here](https://simplepapers.streamlit.app/)!
 
+Or watch this video demo [here](https://youtu.be/NZFg6RpLY6M).
+
 ## 📚 Available Papers
 
 - [Attention Is All You Need](https://simplepapers.streamlit.app/?paper=1706.03762v7)

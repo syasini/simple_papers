@@ -5,11 +5,13 @@ def display_how_this_works():
     """
     Display a concise explanation of how Simple Papers works using Streamlit components.
     """
-    
+
 
     st.markdown("### 🎯 What is Simple Papers?")
     st.markdown("Makes scary academic papers less scary. Click things, get explanations. Revolutionary stuff!")
     
+    st.video("https://youtu.be/NZFg6RpLY6M")
+
     st.markdown("### 🌐 Streamlit Cloud Version")
     st.warning("**This is pretty much just a demo version!** So you only see pre-parsed papers here. If you want to upload your own, you'll need to run this locally (see below).")
     
@@ -60,6 +62,6 @@ def display_how_this_works():
     st.markdown("---")
     
     st.markdown("### 🚧 This is just a POC")
-    st.markdown("**Translation**: I just built this for fun. If people actually use this thing, we'll make it less janky and easier to set up. So if you like it, spread the word! ")
+    st.markdown("**Translation**: I just built this as a fun learning experience. If people actually use this thing, we'll make it less janky and easier to set up. So if you like it, spread the word! ")
     st.success("**TL;DR**: Click on rectangles → Read simplified explanations → Feel smarter (results may vary)")
     

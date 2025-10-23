@@ -14,14 +14,6 @@ Simple Papers transforms complex academic papers into digestible, simplified con
 
 Check out the app [here](https://simplepapers.streamlit.app/)!
 
-## ✨ Features
-
-- **📄 Smart Paper Simplification**: Makes complex academic papers easy to understand
-- **🎯 Interactive Annotations**: Click on highlighted sections for simplified explanations
-- **🔊 Audio Narration**: Listen to paper sections with multiple voice options
-- **🔍 Keyword Extraction**: Automatically extract and link technical terms to Wikipedia
-- **📱 Two Usage Modes**: Use online with pre-parsed papers or locally with your own PDFs
-
 ## 📚 Available Papers
 
 - [Attention Is All You Need](https://simplepapers.streamlit.app/?paper=1706.03762v7)

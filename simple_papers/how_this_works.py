@@ -44,7 +44,8 @@ def display_how_this_works():
     
     st.markdown("### 🏠 Want to Run This Locally?")
     st.info("**Good news**: 😃 This will let you parse your own papers!  **Bad news**: You need a ton of API keys. 🫠")
-    
+    st.info("Check the **[GitHub repo](https://github.com/syasini/simple_papers)** for setup instructions.")
+
     api_col1, api_col2 = st.columns(2)
     
     with api_col1:
@@ -57,7 +58,7 @@ def display_how_this_works():
         st.markdown("• ElevenLabs (fancy voices)")
         st.markdown("• OpenAI (basic voices)")
     
-    st.markdown("Check `.streamlit/secrets.toml.example` for setup instructions.")
+    st.markdown("Check `.streamlit/secrets.toml.example` to see a list of required API keys.")
     
     st.markdown("---")
     
